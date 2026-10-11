@@ -168,7 +168,25 @@ Every user-facing string is translatable. To add a language, see the
 [Translation Guide](translate/TRANSLATE.md).
 
 Contributions are welcome — please open issues and pull requests on
-[GitHub](https://github.com/jaxparrow07/liquidglass-kde-widgets).
+[GitHub](https://github.com/jaxparrow07/liquidglass-kde-widgets). For anything visual, follow the
+[Design Guidelines](DESIGN.md) (style modes, color tokens, typography, sizing, motion).
+
+> [!IMPORTANT]
+> **Have an idea for a widget?** Anyone can suggest one, and you don't need to be a developer. Open a
+> [New widget request](https://github.com/jaxparrow07/liquidglass-kde-widgets/issues/new?template=new-widget-request.md)
+> with the macOS/iOS widget it's like (a screenshot or link is enough) and why it would be useful.
+>
+> **Building a new widget?** This project is a curated set of **macOS-style** widgets, so
+> **unrelated widgets cannot be merged.**
+>
+> - New widgets must start as a widget request issue, with a macOS/iOS design reference, how it
+>   follows the [Design Guidelines](DESIGN.md), and the reasoning for why it belongs in this repo.
+>   Please wait for it to be accepted before opening a PR.
+> - If your widget is unrelated to macOS or looks completely different from it, please make it a
+>   **separate widget** of your own. You're welcome to use the liquid-glass shader
+>   (`1-common/components/LiquidGlass.qml` + `shaders/`) under the GPL v3, with attribution.
+>
+> Fixes, new options and translations for existing widgets don't need a request issue.
 
 ---
 
