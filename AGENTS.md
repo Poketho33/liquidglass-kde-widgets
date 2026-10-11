@@ -64,18 +64,35 @@ Widgets follow a consistent shape — look at `packages/calendar/contents/ui/mai
 - Config pages must scroll and use KDE margins: use `KCMUtils.SimpleKCM` (or `AbstractKCM` + your own `ScrollView`) as the root, never a bare `ColumnLayout`/`FormLayout`, or content past the window height is clipped. For tabs, put a `QQC2.TabBar` in `header` with `headerPaddingEnabled: false`; keep every tab's controls instantiated (toggle `visible`) so all `cfg_*` aliases are saved by one Apply.
 - Widget-specific QML components go under `contents/ui/widget/` (e.g. calendar's `TodayBadge.qml`, clock-square's `TickRing.qml` and `DigitalTime.qml`).
 
+## Translatable strings
+
+**Every user-visible string must go through `i18n()`** (or `i18nc` / `i18np`), in config pages, widgets, context menus, dialogs, tooltips, placeholders and empty states. Never hardcode English text, and never build a sentence by concatenating fragments:
+
+```qml
+text: i18n("Lyrics come from %1.", name)             // placeholders, not "…" + name
+text: i18nc("percentage", "%1%", value)              // i18nc: a short context for translators
+text: i18np("%1 day", "%1 days", n)                  // plurals
+```
+
+- Strings are extracted per package by `./translate/merge.sh` (it scans `packages/<name>/contents/**/*.qml`, including the symlinked shared files, so a string in `1-common/` ends up in every widget's template). **Run it after adding or changing any `i18n()` string**, then commit `translate/`. It keeps existing `.po` translations and only adds the new strings untranslated, so there is nothing to translate by hand. See `translate/TRANSLATE.md`.
+- Changing the wording of an existing string makes translators lose it (the old translation becomes an obsolete `#~` entry). Prefer adding a new string over a small edit, and don't reword for taste.
+- `i18n()` only exists in QML, not in `.pragma library` `.js` files (`links.js`, `styleCodec.js`). Translate in the QML caller and pass the text in.
+- Links inside translated text use placeholders for the URL (`i18n("… <a href=\"%1\">LRCLIB</a> …", url)`) so translators can't break them. The widget names in `metadata.json` are not translated.
+- Values shown to users (units, "Off", percentages) are strings too: wrap them, including those returned from a `format:` function.
+- `console.log` messages are for developers and are not translated.
+
 ## Design guidelines & color tokens
 
 **Read [`DESIGN.md`](DESIGN.md) before any visual or UI work** (new widgets, layout, colors, fonts, motion). It holds the design target, the style-mode matrix, typography, sizing constants, motion timings, the pre-PR visual checklist, and the full `MacOSColors` token reference.
 
-The hard rules, repeated here because they're the most common mistakes:
+Summary of the rules most often broken (the canonical, full versions are in `DESIGN.md`; if the two disagree, fix this summary):
 - `1-common/components/MacOSColors.qml` is the single source of truth for all colors and opacities. **Never hardcode a color or branch on `colors.isGlass` / `colors.isLight` / `colors.glassIsLight` in widget code**; add a semantic token there instead, and document it in `DESIGN.md`.
 - `isLight` is light *solid* mode only (always false in glass). Light *glass* is the separate `glassIsLight` axis.
 - Every widget must work in Glass Dark, Glass Light, Solid Dark, Solid Light, and the fallback rect.
 
 ## New widget contributions: policy (tell the user)
 
-This repo is a curated set of **macOS-style** widgets. If a user asks you to create a new widget **and they intend to contribute it to this repo** (or it's unclear), tell them this before writing code:
+This repo is a curated set of **macOS-style** widgets (the human-readable version of this policy is [`CONTRIBUTING.md`](CONTRIBUTING.md); keep the two consistent). If a user asks you to create a new widget **and they intend to contribute it to this repo** (or it's unclear), tell them this before writing code:
 
 - **Unrelated widgets cannot be merged** into this project.
 - A new widget must start as a **[New widget request](.github/ISSUE_TEMPLATE/new-widget-request.md) issue**, with a macOS/iOS design reference, how it follows `DESIGN.md`, and the reasoning for why it belongs in this repo. Code comes after the request is accepted.

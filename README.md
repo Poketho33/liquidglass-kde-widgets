@@ -116,18 +116,6 @@ Or install a single widget by its package name:
 ./install.sh <package_name>
 ```
 
-### Building shaders
-
-Compiled `.qsb` shaders are committed, so you dont have to compile the shaders again. Rebuild them only if you've changed
-a shader source:
-
-```bash
-./build-shaders.sh        # 1-common/components/shaders/*.frag -> *.qsb
-```
-
-Then install/package.
-
-
 Available package names:
 
 | Package | Widget |
@@ -165,28 +153,17 @@ killall plasmashell && kstart plasmashell                       # restart
 ## Translations & Contributing
 
 Every user-facing string is translatable. To add a language, see the
-[Translation Guide](translate/TRANSLATE.md).
-
-Contributions are welcome — please open issues and pull requests on
-[GitHub](https://github.com/jaxparrow07/liquidglass-kde-widgets). For anything visual, follow the
-[Design Guidelines](DESIGN.md) (style modes, color tokens, typography, sizing, motion).
+[Translation Guide](translate/TRANSLATE.md). For everything else (reporting bugs, suggesting widgets,
+setting up, opening a pull request), read [CONTRIBUTING.md](CONTRIBUTING.md). For anything visual,
+follow the [Design Guidelines](DESIGN.md).
 
 > [!IMPORTANT]
-> **Have an idea for a widget?** Anyone can suggest one, and you don't need to be a developer. Open a
-> [New widget request](https://github.com/jaxparrow07/liquidglass-kde-widgets/issues/new?template=new-widget-request.md)
-> with the macOS/iOS widget it's like (a screenshot or link is enough) and why it would be useful.
+> **Have an idea for a widget?** Anyone can suggest one, no coding needed: open a
+> [New widget request](https://github.com/jaxparrow07/liquidglass-kde-widgets/issues/new?template=new-widget-request.md).
 >
-> **Building a new widget?** This project is a curated set of **macOS-style** widgets, so
-> **unrelated widgets cannot be merged.**
->
-> - New widgets must start as a widget request issue, with a macOS/iOS design reference, how it
->   follows the [Design Guidelines](DESIGN.md), and the reasoning for why it belongs in this repo.
->   Please wait for it to be accepted before opening a PR.
-> - If your widget is unrelated to macOS or looks completely different from it, please make it a
->   **separate widget** of your own. You're welcome to use the liquid-glass shader
->   (`1-common/components/LiquidGlass.qml` + `shaders/`) under the GPL v3, with attribution.
->
-> Fixes, new options and translations for existing widgets don't need a request issue.
+> **Building a new widget?** Only **macOS-style** widgets are accepted, and new widgets start as a
+> request issue. Unrelated widgets can't be merged. See [CONTRIBUTING.md](CONTRIBUTING.md) before
+> you start.
 
 ---
 

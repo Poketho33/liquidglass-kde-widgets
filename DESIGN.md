@@ -11,7 +11,7 @@ style. When in doubt, match Apple's version: layout, hierarchy, type, spacing an
 
 - Each widget should map to a widget or system surface that exists on macOS / iOS (Clock, World
   Clock, Weather, Calendar, Music / Now Playing, Timer, …). A widget with no macOS counterpart
-  needs a strong reason to be in this repo (see [Contributing new widgets](#contributing-new-widgets)).
+  needs a strong reason to be in this repo (see [CONTRIBUTING.md](CONTRIBUTING.md#building-a-new-widget)).
 - Content first: one glanceable purpose per widget. No settings, toolbars or dense controls on the
   face of the widget; configuration lives in the config dialog.
 - The glass **is** the background. Widgets set `Plasmoid.backgroundHints: NoBackground` and draw a
@@ -142,7 +142,9 @@ Rules:
 - Hit targets are at least about 24 px even when the visual is smaller.
 - Empty states are centered, short (e.g. "No upcoming events"), and around 45 % opacity.
 
-## Pre-PR visual checklist
+## Visual review criteria
+
+What a visual change is reviewed against. The pull request template links here.
 
 - [ ] Matches a macOS / iOS reference (attach it to the PR).
 - [ ] Looks right in Glass Dark, Glass Light, Solid Dark, Solid Light, and the fallback.
@@ -151,25 +153,7 @@ Rules:
 - [ ] Wide (2:1) and panel layouts work, if the widget supports them.
 - [ ] Idle CPU/GPU is flat: no always-on animation or polling.
 
-## Contributing new widgets
+## Contributing
 
-This repo is a **curated set of macOS-style widgets**, not a general widget collection.
-**Unrelated widgets won't be merged**, however well they're built.
-
-**Just suggesting a widget?** You don't need to be a developer or read the rest of this file. Open a
-[New widget request](.github/ISSUE_TEMPLATE/new-widget-request.md) with the macOS / iOS widget it's
-like (a screenshot or link is enough) and why it would be useful.
-
-**Building one yourself:**
-
-1. **Open a [New widget request](.github/ISSUE_TEMPLATE/new-widget-request.md) issue first,
-   before writing code.** Include the macOS / iOS design reference, how it follows these
-   guidelines, and why it belongs in this repo rather than as a standalone widget.
-2. Wait for the request to be accepted. PRs that add an unrequested widget will be closed.
-3. If your widget is unrelated to macOS, or looks completely different from it, build it as your
-   **own separate widget**. You're welcome to use the liquid-glass shader
-   (`1-common/components/LiquidGlass.qml` and `shaders/`) under the project's GPL v3 license,
-   with attribution.
-
-Improvements to existing widgets (bug fixes, options, translations) don't need a request issue
-first.
+Adding a widget, opening a pull request or suggesting an idea: see [CONTRIBUTING.md](CONTRIBUTING.md).
+Only widgets with a macOS or iOS counterpart are accepted, and a new widget starts as a request issue.
