@@ -9,7 +9,7 @@ ConfigModel {
     }
     ConfigCategory {
         name: i18n("More & Support")
-        icon: "love"
+        icon: Qt.resolvedUrl("../ui/icons/about/bmc-icon.svg")
         source: "config/ConfigAbout.qml"
     }
 }
