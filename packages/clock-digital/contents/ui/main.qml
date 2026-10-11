@@ -91,16 +91,32 @@ PlasmoidItem {
             tickColor: colors.foreground
         }
 
-        // Smoothly advance the second hand at ~60fps while visible.
+        // Advance the second hand while visible; smooth mode is an explicit opt-in.
         // Don't gate on application state — Plasma desktop widgets must
         // keep ticking even when no Qt window has keyboard focus.
         Timer {
-            interval: 16
+            id: secondTimer
+            interval: plasmoid.configuration.smoothSeconds
+                ? 16 : Math.max(1, 1000 - (Date.now() % 1000))
             repeat: true
             running: full.visible
             onTriggered: {
                 const ms = Date.now() % 60000;
-                ticks.secondHandAngle = (ms / 60000) * 360;
+                ticks.secondHandAngle = plasmoid.configuration.smoothSeconds
+                    ? (ms / 60000) * 360 : Math.floor(ms / 1000) * 6;
+                // Keep stepped updates aligned to the next wall-clock second.
+                if (!plasmoid.configuration.smoothSeconds)
+                    secondTimer.interval = Math.max(1, 1000 - (Date.now() % 1000));
+            }
+        }
+
+        Connections {
+            target: plasmoid.configuration
+            function onSmoothSecondsChanged() {
+                secondTimer.stop()
+                secondTimer.interval = plasmoid.configuration.smoothSeconds
+                    ? 16 : Math.max(1, 1000 - (Date.now() % 1000))
+                secondTimer.start()
             }
         }
 
