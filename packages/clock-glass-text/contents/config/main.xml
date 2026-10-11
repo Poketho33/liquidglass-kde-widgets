@@ -35,8 +35,11 @@
         <entry name="blurRadiusPx" type="Int">
             <default>0</default>
         </entry>
+        <entry name="blurAlgorithm" type="Int">
+            <default>0</default>
+        </entry>
         <entry name="realtimeRefraction" type="Bool">
-            <default>true</default>
+            <default>false</default>
         </entry>
         <!-- Overlay legibility text on top of the glass digits.
              textTintPct: 0 = fully transparent (refraction only), 100 = solid. -->

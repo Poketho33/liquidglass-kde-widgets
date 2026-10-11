@@ -78,6 +78,7 @@ PlasmoidItem {
             chromaStrength: plasmoid.configuration.chromaStrengthPct / 100
             specStrength: plasmoid.configuration.specStrengthPct / 100
             blurRadius: plasmoid.configuration.blurRadiusPx
+            blurAlgorithm: plasmoid.configuration.blurAlgorithm
             realtimeRefraction: plasmoid.configuration.realtimeRefraction
             fallbackOpacity: colors.glassFallbackOpacity
             // Solid style keeps the glass material as the backdrop by default;
