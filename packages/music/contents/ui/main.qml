@@ -11,6 +11,32 @@ PlasmoidItem {
     id: root
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+
+    WidgetActions { id: commonActions }
+
+    PlasmaCore.Action {
+        id: playPauseAction
+        text: root.isPlaying ? i18n("Pause") : i18n("Play")
+        icon.name: root.isPlaying ? "media-playback-pause" : "media-playback-start"
+        enabled: root._activePlayer !== null && root._activePlayer !== undefined
+        onTriggered: root.togglePlaying()
+    }
+    PlasmaCore.Action {
+        id: nextAction
+        text: i18n("Next Track")
+        icon.name: "media-skip-forward"
+        enabled: root.canGoNext
+        onTriggered: root.next()
+    }
+    PlasmaCore.Action {
+        id: previousAction
+        text: i18n("Previous Track")
+        icon.name: "media-skip-backward"
+        enabled: root.canGoPrevious
+        onTriggered: root.previous()
+    }
+
+    Plasmoid.contextualActions: [playPauseAction, nextAction, previousAction].concat(commonActions.list)
     preferredRepresentation: fullRepresentation
 
     readonly property bool _shouldShow: {
@@ -515,8 +541,8 @@ PlasmoidItem {
 
     fullRepresentation: Item {
         id: full
-        Layout.preferredWidth:  full.width  > 0 ? full.width  : 200
-        Layout.preferredHeight: full.height > 0 ? full.height : 200
+        Layout.preferredWidth:  full.width  > 0 ? full.width  : 440
+        Layout.preferredHeight: full.height > 0 ? full.height : 220
         Layout.minimumWidth: 80
         Layout.minimumHeight: 60
 

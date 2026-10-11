@@ -8,6 +8,10 @@ PlasmoidItem {
     id: root
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+
+    WidgetActions { id: commonActions }
+
+    Plasmoid.contextualActions: commonActions.list
     preferredRepresentation: fullRepresentation
 
     MacOSColors {

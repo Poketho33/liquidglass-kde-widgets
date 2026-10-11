@@ -3,6 +3,7 @@ import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
 import org.kde.plasma.workspace.calendar 2.0 as PlasmaCalendar
+import org.kde.plasma.plasma5support as P5Support
 import "components"
 import "widget"
 
@@ -11,6 +12,38 @@ PlasmoidItem {
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
     preferredRepresentation: fullRepresentation
+
+    WidgetActions { id: commonActions }
+
+    // Runs a shell command and discards the result.
+    P5Support.DataSource {
+        id: launcher
+        engine: "executable"
+        connectedSources: []
+        onNewData: (source, data) => disconnectSource(source)
+        function run(cmd) { connectSource(cmd) }
+    }
+
+    PlasmaCore.Action {
+        id: openCalendarAction
+        text: i18n("Open Calendar")
+        icon.name: "view-calendar"
+        onTriggered: launcher.run("kstart --application org.kde.merkuro.calendar || kstart --application org.kde.korganizer")
+    }
+    PlasmaCore.Action {
+        id: newEventAction
+        text: i18n("New Event…")
+        icon.name: "appointment-new"
+        // Starts KOrganizer if needed, waits for its D-Bus name, then opens the editor.
+        onTriggered: launcher.run("sh -c 'dbus-send --session --dest=org.freedesktop.DBus --print-reply --type=method_call /org/freedesktop/DBus org.freedesktop.DBus.NameHasOwner string:org.kde.korganizer | grep -q true || { kstart --application org.kde.korganizer; for i in 1 2 3 4 5 6 7 8 9 10 11 12 13 14 15; do sleep 1; dbus-send --session --dest=org.freedesktop.DBus --print-reply --type=method_call /org/freedesktop/DBus org.freedesktop.DBus.NameHasOwner string:org.kde.korganizer | grep -q true && break; done; }; dbus-send --session --type=method_call --dest=org.kde.korganizer /Calendar org.kde.Korganizer.Calendar.openEventEditor'")
+    }
+    PlasmaCore.Action {
+        id: manageCalendarsAction
+        text: i18n("Manage Calendars…")
+        icon.name: "configure"
+        onTriggered: launcher.run("kstart --application org.kde.akonadi.configdialog")
+    }
+    Plasmoid.contextualActions: [openCalendarAction, newEventAction, manageCalendarsAction].concat(commonActions.list)
 
     MacOSColors {
         id: colors
@@ -329,8 +362,8 @@ PlasmoidItem {
 
     fullRepresentation: Item {
         id: full
-        Layout.preferredWidth:  full.width  > 0 ? full.width  : 200
-        Layout.preferredHeight: full.height > 0 ? full.height : 200
+        Layout.preferredWidth:  full.width  > 0 ? full.width  : 300
+        Layout.preferredHeight: full.height > 0 ? full.height : 300
         Layout.minimumWidth: 160
         Layout.minimumHeight: 160
 

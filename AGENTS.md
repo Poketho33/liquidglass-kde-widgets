@@ -85,6 +85,12 @@ You can still help them build the widget. This note is about what can be merged,
 
 If the user **only wants to suggest a widget** (not build it, e.g. a non-developer), don't send them through the design requirements above. Point them to the New widget request issue: a macOS/iOS reference (a screenshot or link is enough) and why it would be useful are all they need. Offer to help word the issue if they want.
 
+## Context menu actions
+
+Right-click entries come from `Plasmoid.contextualActions`. Every `main.qml` instantiates the shared `WidgetActions { id: commonActions }` (`1-common/components/WidgetActions.qml`, symlinked like `LiquidGlass.qml`) and sets `Plasmoid.contextualActions: [widgetSpecificActions].concat(commonActions.list)`. The shared list holds Glass Style toggle, Apply Copied Style and Buy Me a Coffee. "Apply Copied Style" parses the clipboard JSON written by the Appearance page's Copy button via `styleCodec.js`; when you add a style key to `GlassAppearancePage` (or a variant's `serializeExtras`), add its short key there too. Widget-specific actions are `PlasmaCore.Action`s declared in that widget's `main.qml` (weather Refresh, calendar Open/New Event/Manage Calendars, timer and music controls, clock Adjust Date and Time).
+
+**Opening links on Wayland:** "Buy Me a Coffee" in the menu opens a small confirmation window first and only opens the browser from a click inside it. `Qt.openUrlExternally()` asks the compositor for an activation token asynchronously (from the focused window) before launching, and a context menu leaves no focused window. The dialog also must **stay open for a moment after the click** (`closeAfterLaunch`, 2.5 s): closing it immediately cancels the pending token request, and the launch silently never happens while `openUrlExternally` still returns `true`. Links from a config page (`ConfigAbout.qml`) open directly, since the settings window is already focused. All URLs live in `links.js`.
+
 ## Timer / power conventions
 
 - Do **not** gate plasmoid Timers on `Qt.application.state === Qt.ApplicationActive`. Desktop plasmoids are not a "focused app" — this condition flips to inactive whenever focus moves to another window, freezing the timer. Gate on `visible` if you want to sleep when hidden, or leave `running: true` for always-on clocks/tickers.
