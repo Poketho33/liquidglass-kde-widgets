@@ -20,6 +20,15 @@ QtObject {
     readonly property bool isGlass: styleMode === 0
     readonly property bool isSolid: styleMode === 1
 
+    // Glass-mode counterpart of isLight: true when the user picked Light
+    // (or the system theme is light under Follow system) while in Glass
+    // style. Kept as its own axis rather than folded into isLight so the
+    // many existing `isGlass ? a : b` branches in widget code (which never
+    // considered a light glass) keep their current dark-glass behavior;
+    // only the tokens below that actually govern the glass tint/foreground
+    // read this.
+    readonly property bool glassIsLight: isGlass && (appearance === 1 || (useSystem && !systemIsDark))
+
     readonly property color background: isLight ? "#f2f2f7" : "#1c1c1e"
     readonly property color surface:    isLight ? "#ffffff" : "#2c2c2e"
     readonly property color surfaceAlt: isLight ? "#e5e5ea" : "#3a3a3c"
@@ -34,9 +43,9 @@ QtObject {
     readonly property color separator: isLight ? "#3c3c4336" : "#54545899"
 
     // Glass mode tint — translucent overlay sampled by the shader.
-    readonly property color glassTint: isLight ? "#ffffff" : "#000000"
-    readonly property real  glassTintAlpha: isLight ? 0.60 : 0.32
-    readonly property real  glassFallbackOpacity: isLight ? 0.72 : 0.55
+    readonly property color glassTint: glassIsLight ? "#ffffff" : "#000000"
+    readonly property real  glassTintAlpha: glassIsLight ? 0.60 : 0.32
+    readonly property real  glassFallbackOpacity: glassIsLight ? 0.72 : 0.55
 
     // Solid mode palette — opaque fill plus contrasting foreground.
     readonly property color solidBackground: isLight ? "#ffffff" : "#1A1B1E"
@@ -51,32 +60,34 @@ QtObject {
 
     readonly property bool effectiveLight: foregroundDarkOverride !== null
         ? !foregroundDarkOverride
-        : isLight
+        : (isGlass ? glassIsLight : isLight)
 
-    // Foreground used by widget content. Glass stays monochromatic white
-    // so the translucent shader keeps its existing look regardless of
-    // appearance; Solid follows light/dark inversion.
-    readonly property color foreground: isGlass ? "#ffffff" : (effectiveLight ? "#1A1B1E" : "#ffffff")
+    // Foreground used by widget content. Glass follows glassIsLight (a
+    // light glass tint needs dark content to stay legible); Solid follows
+    // the ordinary light/dark inversion.
+    readonly property color foreground: isGlass ? (glassIsLight ? "#1A1B1E" : "#ffffff") : (effectiveLight ? "#1A1B1E" : "#ffffff")
 
-    // Today/highlight accent: white in Glass (monochrome) and red in Solid.
-    readonly property color todayAccent: isGlass ? "#ffffff" : accentRed
+    // Today/highlight accent: white on dark glass, red otherwise.
+    readonly property color todayAccent: isGlass ? (glassIsLight ? accentRed : "#ffffff") : accentRed
 
     // Badge punch-out: glass uses destination-out compositing, solid uses normal text.
     readonly property bool punchOutText: isGlass
 
-    // Card backgrounds — white on dark modes, black on light solid mode.
-    readonly property color cardBackground:        isLight ? "#000000" : "#ffffff"
-    readonly property real  cardBackgroundOpacity: isLight ? 0.08 : 0.10
-    readonly property real  cardHoverOpacity:      isLight ? 0.14 : 0.17
-    readonly property real  cardPressOpacity:      isLight ? 0.20 : 0.22
+    // Card backgrounds — white on dark modes, black on light modes (solid
+    // light, or a light glass tint).
+    readonly property bool  _cardLight:            isLight || glassIsLight
+    readonly property color cardBackground:        _cardLight ? "#000000" : "#ffffff"
+    readonly property real  cardBackgroundOpacity: _cardLight ? 0.08 : 0.10
+    readonly property real  cardHoverOpacity:      _cardLight ? 0.14 : 0.17
+    readonly property real  cardPressOpacity:      _cardLight ? 0.20 : 0.22
 
     // Timer action colors — solid-filled in glass, tinted in solid.
-    readonly property color countdownText:  isGlass ? "#ffffff" : "#FF8B00"
+    readonly property color countdownText:  isGlass ? (glassIsLight ? "#FF8B00" : "#ffffff") : "#FF8B00"
     readonly property color actionGreen:    "#00A832"
     readonly property color actionOrange:   "#FF8E00"
-    readonly property color buttonIcon:     isGlass ? "#ffffff" : solidForeground
+    readonly property color buttonIcon:     isGlass ? (glassIsLight ? "#1A1B1E" : "#ffffff") : solidForeground
     readonly property color cancelButtonBg: isGlass
-        ? Qt.rgba(1, 1, 1, 0.25)
+        ? (glassIsLight ? Qt.rgba(0, 0, 0, 0.12) : Qt.rgba(1, 1, 1, 0.25))
         : Qt.rgba(solidForeground.r, solidForeground.g, solidForeground.b, 0.12)
     readonly property color actionGreenBg:  isGlass ? "#00A832" : Qt.rgba(0, 0.659, 0.196, 0.18)
     readonly property color actionOrangeBg: isGlass ? "#FF8E00" : Qt.rgba(1, 0.557, 0, 0.18)
@@ -116,12 +127,12 @@ QtObject {
     // Use explicit RGBA values here instead of deriving channels from another
     // color property; QML can coerce those through a string path and collapse
     // the channel reads to black in dark/glass modes.
-    readonly property color musicSecondary: (isGlass ? false : effectiveLight)
+    readonly property color musicSecondary: effectiveLight
         ? Qt.rgba(0.102, 0.106, 0.118, 0.55)
         : Qt.rgba(1, 1, 1, 0.55)
 
     readonly property color weatherForeground: "#ffffff"
-    readonly property string weatherIconSet: isGlass ? "mono-light" : "default"
+    readonly property string weatherIconSet: isGlass ? (glassIsLight ? "mono-dark" : "mono-light") : "default"
     readonly property color weatherSeparator: isGlass ? Qt.rgba(1, 1, 1, 0.15) : Qt.rgba(1, 1, 1, 0.20)
     readonly property color weatherRangeBarBg: isGlass ? Qt.rgba(1, 1, 1, 0.12) : Qt.rgba(1, 1, 1, 0.15)
     readonly property color weatherRangeBarFill: isGlass ? Qt.rgba(1, 1, 1, 0.50) : Qt.rgba(1, 1, 1, 0.60)
