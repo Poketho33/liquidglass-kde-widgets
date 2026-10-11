@@ -11,23 +11,11 @@ ConfigModel {
         icon: "preferences-desktop-theme"
         source: "config/ConfigAppearance.qml"
     }
+    // General + Events (Akonadi) as tabs on one page.
     ConfigCategory {
         name: i18n("Calendar")
         icon: "view-calendar"
-        source: "config/ConfigGeneral.qml"
-    }
-
-    ConfigCategory {
-        name: i18n("Calendar Events")
-        icon: "view-calendar"
-        source: "config/ConfigPimEvents.qml"
-        visible: Plasmoid.configuration.enabledCalendarPlugins.indexOf("pimevents") > -1
-    }
-
-    ConfigCategory {
-        name: i18n("More & Support")
-        icon: "love"
-        source: "config/ConfigAbout.qml"
+        source: "config/ConfigCalendar.qml"
     }
 
     // Remaining plugins (holidays, astronomical, etc.) use their own built-in config pages.
@@ -56,7 +44,34 @@ ConfigModel {
                      && Plasmoid.configuration.enabledCalendarPlugins.indexOf(pluginId) > -1
         }
 
-        onObjectAdded: (index, object) => configModel.appendCategory(object)
+        onObjectAdded: (index, object) => {
+            configModel.appendCategory(object)
+            aboutTimer.restart()
+        }
         onObjectRemoved: (index, object) => configModel.removeCategory(object)
     }
+
+    // "More & Support" must be last, but ConfigModel can only append, and the
+    // plugin pages above arrive asynchronously (after this model completes).
+    // So it's appended once, shortly after the last plugin page is added;
+    // the timer is also started on completion for setups with no plugins.
+    readonly property ConfigCategory _aboutCategory: ConfigCategory {
+        name: i18n("More & Support")
+        icon: Qt.resolvedUrl("../ui/icons/about/bmc-icon.svg")
+        source: "config/ConfigAbout.qml"
+    }
+
+    property bool _aboutAdded: false
+
+    readonly property Timer _aboutTimer: Timer {
+        id: aboutTimer
+        interval: 150
+        onTriggered: {
+            if (configModel._aboutAdded) return
+            configModel._aboutAdded = true
+            configModel.appendCategory(configModel._aboutCategory)
+        }
+    }
+
+    Component.onCompleted: aboutTimer.start()
 }
