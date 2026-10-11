@@ -12,6 +12,7 @@ ColumnLayout {
     property alias cfg_lyricsFontSizeWide: wideFontSpin.value
     property alias cfg_lyricsFontSizeTall: tallFontSpin.value
     property alias cfg_lyricsBlur: lyricsBlurCheck.checked
+    property alias cfg_showTrackTitleInLyrics: showTrackTitleCheck.checked
     property alias cfg_artRefreshEnabled: artRefreshCheck.checked
 
     Kirigami.FormLayout {
@@ -60,6 +61,12 @@ ColumnLayout {
             id: lyricsBlurCheck
             Kirigami.FormData.label: i18n("Blur upcoming lines:")
             text: i18n("Blur upcoming lyrics lines (disable on slow hardware)")
+        }
+
+        CheckBox {
+            id: showTrackTitleCheck
+            Kirigami.FormData.label: i18n("Track title in lyrics:")
+            text: i18n("Show the current track title above lyrics")
         }
 
         CheckBox {

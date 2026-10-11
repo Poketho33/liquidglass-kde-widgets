@@ -51,6 +51,9 @@
         <entry name="lyricsBlur" type="Bool">
             <default>true</default>
         </entry>
+        <entry name="showTrackTitleInLyrics" type="Bool">
+            <default>true</default>
+        </entry>
         <entry name="lyricsFont" type="Int">
             <default>0</default>
         </entry>

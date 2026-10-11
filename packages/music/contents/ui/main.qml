@@ -1,3 +1,4 @@
+pragma ComponentBehavior: Bound
 import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
@@ -44,6 +45,7 @@ PlasmoidItem {
         appearance: plasmoid.configuration.appearance
         foregroundDarkOverride: isSolid && root._hasSampledColor ? root._sampledIsDark : null
     }
+    readonly property var colorTokens: colors
 
     FontLoader { id: sfThin;    source: Qt.resolvedUrl("../fonts/sf_pro_display_thin.otf") }
     FontLoader { id: sfRegular; source: Qt.resolvedUrl("../fonts/sf_pro_display_regular.otf") }
@@ -501,7 +503,9 @@ PlasmoidItem {
                     Math.max(accent.l, 0.75))
             }
 
-            root._sampledIsDark = dominant.lum < 0.5
+            // The generated solid gradient is deliberately dark even when
+            // the source cover is bright, so its content must stay light.
+            root._sampledIsDark = true
             root._hasSampledColor = true
         }
     }
@@ -550,129 +554,148 @@ PlasmoidItem {
                 : Qt.vector4d(0, 0, 0, 0)
         }
 
-        SquareLayout {
+        Loader {
+            id: activeLayout
             anchors.fill: parent
-            visible: full._layout === "square"
-            colors: colors
-            cornerRadius: plasmoid.configuration.cornerRadius
-            roundness: plasmoid.configuration.roundnessX10 / 10
-            fontFamily: sfRegular.name
-            fontFamilyThin: sfThin.name
-            track: root.track
-            artist: root.artist
-            albumArt: root.albumArt
-            isPlaying: root.isPlaying
-            canGoPrevious: root.canGoPrevious
-            canGoNext: root.canGoNext
-            canPlay: root.canPlay
-            canPause: root.canPause
-            position: root.position
-            length: root.length
-            onTogglePlaying: root.togglePlaying()
-            onNextTrack: root.next()
-            onPreviousTrack: root.previous()
-            onSeek: function(pos) { root.seek(pos) }
-            formatTime: root.formatTime
+            sourceComponent: full._layout === "square" ? squareLayoutComponent
+                           : full._layout === "tallwide" ? tallWideLayoutComponent
+                           : full._layout === "wide" ? wideLayoutComponent
+                           : barLayoutComponent
         }
 
-        TallWideLayout {
-            anchors.fill: parent
-            visible: full._layout === "tallwide"
-            colors: colors
-            accentColor: root._hasSampledColor ? root._sampledPrimaryColor : colors.foreground
-            lyricsAccentColor: root._hasSampledColor ? root._sampledTint : Qt.rgba(1, 1, 1, 0.35)
-            flipDirection: root._flipDirection
-            lyricsActive: root.lyricsActive
-            onToggleLyrics: root.lyricsActive = !root.lyricsActive
-            syncedLyrics: root._syncedLyrics
-            plainLyrics: root._plainLyrics
-            lyricsState: root._lyricsState
-            lyricsPositionMs: root.position / 1000
-            lyricsBlur: plasmoid.configuration.lyricsBlur
-            lyricsActiveOpacity: plasmoid.configuration.lyricsActiveOpacity / 100
-            lyricsInactiveOpacity: plasmoid.configuration.lyricsInactiveOpacity / 100
-            lyricsFontSizeFactor: plasmoid.configuration.lyricsFontSizeTall / 1000
-            fontFamily: sfRegular.name
-            fontFamilyThin: sfThin.name
-            track: root.track
-            artist: root.artist
-            albumArt: root.albumArt
-            isPlaying: root.isPlaying
-            canGoPrevious: root.canGoPrevious
-            canGoNext: root.canGoNext
-            canPlay: root.canPlay
-            canPause: root.canPause
-            position: root.position
-            length: root.length
-            onTogglePlaying: root.togglePlaying()
-            onNextTrack: root.next()
-            onPreviousTrack: root.previous()
-            onSeek: function(pos) { root.seek(pos) }
-            onRetryLyrics: root._fetchLyrics()
-            formatTime: root.formatTime
+        Component {
+            id: squareLayoutComponent
+            SquareLayout {
+                anchors.fill: parent
+                colors: root.colorTokens
+                cornerRadius: plasmoid.configuration.cornerRadius
+                roundness: plasmoid.configuration.roundnessX10 / 10
+                fontFamily: sfRegular.name
+                fontFamilyThin: sfThin.name
+                track: root.track
+                artist: root.artist
+                albumArt: root.albumArt
+                isPlaying: root.isPlaying
+                canGoPrevious: root.canGoPrevious
+                canGoNext: root.canGoNext
+                canPlay: root.canPlay
+                canPause: root.canPause
+                position: root.position
+                length: root.length
+                onTogglePlaying: root.togglePlaying()
+                onNextTrack: root.next()
+                onPreviousTrack: root.previous()
+                onSeek: function(pos) { root.seek(pos) }
+                formatTime: root.formatTime
+            }
         }
 
-        WideLayout {
-            anchors.fill: parent
-            visible: full._layout === "wide"
-            colors: colors
-            accentColor: root._hasSampledColor ? root._sampledPrimaryColor : colors.foreground
-            lyricsAccentColor: root._hasSampledColor ? root._sampledTint : Qt.rgba(1, 1, 1, 0.35)
-            flipDirection: root._flipDirection
-            lyricsActive: root.lyricsActive
-            onToggleLyrics: root.lyricsActive = !root.lyricsActive
-            syncedLyrics: root._syncedLyrics
-            plainLyrics: root._plainLyrics
-            lyricsState: root._lyricsState
-            lyricsPositionMs: root.position / 1000
-            lyricsBlur: plasmoid.configuration.lyricsBlur
-            lyricsActiveOpacity: plasmoid.configuration.lyricsActiveOpacity / 100
-            lyricsInactiveOpacity: plasmoid.configuration.lyricsInactiveOpacity / 100
-            lyricsFontSizeFactor: plasmoid.configuration.lyricsFontSizeWide / 1000
-            fontFamily: sfRegular.name
-            fontFamilyThin: sfThin.name
-            track: root.track
-            artist: root.artist
-            albumArt: root.albumArt
-            isPlaying: root.isPlaying
-            canGoPrevious: root.canGoPrevious
-            canGoNext: root.canGoNext
-            canPlay: root.canPlay
-            canPause: root.canPause
-            position: root.position
-            length: root.length
-            onTogglePlaying: root.togglePlaying()
-            onNextTrack: root.next()
-            onPreviousTrack: root.previous()
-            onSeek: function(pos) { root.seek(pos) }
-            onRetryLyrics: root._fetchLyrics()
-            formatTime: root.formatTime
+        Component {
+            id: tallWideLayoutComponent
+            TallWideLayout {
+                anchors.fill: parent
+                colors: root.colorTokens
+                accentColor: root._hasSampledColor ? root._sampledPrimaryColor : root.colorTokens.foreground
+                lyricsAccentColor: root._hasSampledColor ? root._sampledTint : Qt.rgba(1, 1, 1, 0.35)
+                flipDirection: root._flipDirection
+                lyricsActive: root.lyricsActive
+                onToggleLyrics: root.lyricsActive = !root.lyricsActive
+                syncedLyrics: root._syncedLyrics
+                plainLyrics: root._plainLyrics
+                lyricsState: root._lyricsState
+                lyricsPositionMs: root.position / 1000
+                lyricsBlur: plasmoid.configuration.lyricsBlur
+                showTrackTitleInLyrics: plasmoid.configuration.showTrackTitleInLyrics
+                lyricsActiveOpacity: plasmoid.configuration.lyricsActiveOpacity / 100
+                lyricsInactiveOpacity: plasmoid.configuration.lyricsInactiveOpacity / 100
+                lyricsFontSizeFactor: plasmoid.configuration.lyricsFontSizeTall / 1000
+                fontFamily: sfRegular.name
+                fontFamilyThin: sfThin.name
+                track: root.track
+                artist: root.artist
+                albumArt: root.albumArt
+                isPlaying: root.isPlaying
+                canGoPrevious: root.canGoPrevious
+                canGoNext: root.canGoNext
+                canPlay: root.canPlay
+                canPause: root.canPause
+                position: root.position
+                length: root.length
+                onTogglePlaying: root.togglePlaying()
+                onNextTrack: root.next()
+                onPreviousTrack: root.previous()
+                onSeek: function(pos) { root.seek(pos) }
+                onRetryLyrics: root._fetchLyrics()
+                formatTime: root.formatTime
+            }
         }
 
-        BarLayout {
-            anchors.fill: parent
-            visible: full._layout === "bar"
-            colors: colors
-            accentColor: root._hasSampledColor ? root._sampledPrimaryColor : colors.foreground
-            cornerRadius: plasmoid.configuration.cornerRadius
-            flipDirection: root._flipDirection
-            fontFamily: sfRegular.name
-            fontFamilyThin: sfThin.name
-            track: root.track
-            artist: root.artist
-            albumArt: root.albumArt
-            isPlaying: root.isPlaying
-            canGoPrevious: root.canGoPrevious
-            canGoNext: root.canGoNext
-            canPlay: root.canPlay
-            canPause: root.canPause
-            position: root.position
-            length: root.length
-            onTogglePlaying: root.togglePlaying()
-            onNextTrack: root.next()
-            onPreviousTrack: root.previous()
-            onSeek: function(pos) { root.seek(pos) }
-            formatTime: root.formatTime
+        Component {
+            id: wideLayoutComponent
+            WideLayout {
+                anchors.fill: parent
+                colors: root.colorTokens
+                accentColor: root._hasSampledColor ? root._sampledPrimaryColor : root.colorTokens.foreground
+                lyricsAccentColor: root._hasSampledColor ? root._sampledTint : Qt.rgba(1, 1, 1, 0.35)
+                flipDirection: root._flipDirection
+                lyricsActive: root.lyricsActive
+                onToggleLyrics: root.lyricsActive = !root.lyricsActive
+                syncedLyrics: root._syncedLyrics
+                plainLyrics: root._plainLyrics
+                lyricsState: root._lyricsState
+                lyricsPositionMs: root.position / 1000
+                lyricsBlur: plasmoid.configuration.lyricsBlur
+                showTrackTitleInLyrics: plasmoid.configuration.showTrackTitleInLyrics
+                lyricsActiveOpacity: plasmoid.configuration.lyricsActiveOpacity / 100
+                lyricsInactiveOpacity: plasmoid.configuration.lyricsInactiveOpacity / 100
+                lyricsFontSizeFactor: plasmoid.configuration.lyricsFontSizeWide / 1000
+                fontFamily: sfRegular.name
+                fontFamilyThin: sfThin.name
+                track: root.track
+                artist: root.artist
+                albumArt: root.albumArt
+                isPlaying: root.isPlaying
+                canGoPrevious: root.canGoPrevious
+                canGoNext: root.canGoNext
+                canPlay: root.canPlay
+                canPause: root.canPause
+                position: root.position
+                length: root.length
+                onTogglePlaying: root.togglePlaying()
+                onNextTrack: root.next()
+                onPreviousTrack: root.previous()
+                onSeek: function(pos) { root.seek(pos) }
+                onRetryLyrics: root._fetchLyrics()
+                formatTime: root.formatTime
+            }
+        }
+
+        Component {
+            id: barLayoutComponent
+            BarLayout {
+                anchors.fill: parent
+                colors: root.colorTokens
+                accentColor: root._hasSampledColor ? root._sampledPrimaryColor : root.colorTokens.foreground
+                cornerRadius: plasmoid.configuration.cornerRadius
+                flipDirection: root._flipDirection
+                fontFamily: sfRegular.name
+                fontFamilyThin: sfThin.name
+                track: root.track
+                artist: root.artist
+                albumArt: root.albumArt
+                isPlaying: root.isPlaying
+                canGoPrevious: root.canGoPrevious
+                canGoNext: root.canGoNext
+                canPlay: root.canPlay
+                canPause: root.canPause
+                position: root.position
+                length: root.length
+                onTogglePlaying: root.togglePlaying()
+                onNextTrack: root.next()
+                onPreviousTrack: root.previous()
+                onSeek: function(pos) { root.seek(pos) }
+                formatTime: root.formatTime
+            }
         }
     }
 }

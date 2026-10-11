@@ -30,6 +30,7 @@ Item {
     property real lyricsActiveOpacity: 1.0
     property real lyricsInactiveOpacity: 0.40
     property real lyricsFontSizeFactor: 0.077
+    property bool showTrackTitleInLyrics: true
 
     signal togglePlaying()
     signal nextTrack()
@@ -190,9 +191,25 @@ Item {
         Behavior on opacity { NumberAnimation { duration: 280; easing.type: Easing.OutQuart } }
         Behavior on scale   { NumberAnimation { duration: 280; easing.type: Easing.OutQuart } }
 
+        MarqueeText {
+            id: lyricsTitle
+            anchors.top: parent.top
+            anchors.left: parent.left
+            anchors.right: parent.right
+            anchors.topMargin: lyricsBtn.height + layout._m
+            height: Math.max(18, Math.round(layout._s * 0.065))
+            visible: layout.lyricsActive && layout.showTrackTitleInLyrics && layout.track !== ""
+            text: layout.track
+            fontSize: Math.max(12, Math.round(layout._s * 0.06))
+            fontWeight: Font.DemiBold
+            fontFamily: layout.fontFamily
+            textColor: layout.colors.foreground
+            horizontalAlignment: Text.AlignHCenter
+        }
+
         SyncedLyricsView {
             anchors.fill: parent
-            anchors.topMargin: lyricsBtn.height + layout._m
+            anchors.topMargin: (lyricsTitle.visible ? lyricsTitle.height + Math.round(layout._s * 0.02) : 0) + lyricsBtn.height + layout._m
             anchors.leftMargin: layout._m
             anchors.rightMargin: layout._m
             anchors.bottomMargin: layout._m
