@@ -5,9 +5,9 @@
 msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_com.jaxparrow07.macoswidgets.clock-"
-"analog-2 1.0\n"
+"analog-2 1.1\n"
 "Report-Msgid-Bugs-To: https://github.com/jaxparrow07/macos-widgets/issues\n"
-"POT-Creation-Date: 2026-06-14 18:01+0530\n"
+"POT-Creation-Date: 2026-10-11 17:48+0530\n"
 "PO-Revision-Date: 2025-01-01 00:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
@@ -20,110 +20,293 @@ msgstr ""
 msgid "Appearance"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:73
-msgid "Applied!"
+#: packages/clock-analog-2/contents/config/config.qml:11
+msgid "More & Support"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:75
-msgid "Invalid config string"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:91
-msgid "Preset:"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:96
-msgid "Copy style"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:101
-msgid "Copied!"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:109
-msgid "Paste style"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:136
-msgid "Style:"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:137
-msgid "Glass"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:137
-msgid "Solid"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:142
-msgid "Appearance:"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:143
-msgid "Dark"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:143
-msgid "Light"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:143
-msgid "Follow system"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:148
-msgid "Corner radius (px):"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:154
-msgid "Roundness (×10, 2.0..10.0):"
-msgstr ""
-
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:160
+#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:22
 msgid "Background:"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:161
+#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:23
 msgid "Fully opaque background"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:173
-msgid "Glass effect"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:119
+msgid "Style applied. Press Apply to keep it."
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:178
-msgid "Refraction thickness (px):"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:121
+msgid "The clipboard doesn't contain a copied style."
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:184
-msgid "Index of refraction (×100):"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:148
+msgid "Style"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:190
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:149
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:166
+msgid "Glass"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:150
+msgid "Blur & performance"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:165
+msgid "Style:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:166
+msgid "Solid"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:171
+msgid "Appearance:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:172
+msgid "Dark"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:172
+msgid "Light"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:172
+msgid "Follow system"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:177
+msgid "Glass tint:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:180
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:288
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:302
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:309
+#, javascript-format
+msgctxt "percentage"
+msgid "%1%"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:185
+msgid "Shape"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:191
+msgid "Corner radius:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:194
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:281
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:349
+msgctxt "pixels"
+msgid "%1 px"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:199
+msgid "Corner smoothness:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:218
+msgid "Share"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:222
+msgid "Style preset:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:227
+msgid "Copy style"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:232
+msgid "Copied. Paste it into another Liquid Glass widget."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:238
+msgid "Paste style"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:267
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:336
+msgid "These settings only apply to the Glass style."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:279
+msgid "Edge thickness:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:286
 msgid "Refraction strength:"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:196
-msgid "Tint alpha (%):"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:293
+msgid "Refraction index:"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:202
-msgid "Chromatic aberration (%):"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:300
+msgid "Color fringing:"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:208
-msgid "Specular strength (%):"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:307
+msgid "Edge highlight:"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:214
-msgid "Blur radius (px):"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:314
+msgid "Reset glass settings"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:220
-msgid "Realtime refraction:"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:347
+msgid "Blur radius:"
 msgstr ""
 
-#: packages/clock-analog-2/contents/ui/config/ConfigAppearance.qml:221
-msgid "Recapture every frame (enable for video wallpapers)"
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:349
+msgid "Off"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:354
+msgid "Blur quality:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:355
+msgid "Performance (Dual Kawase)"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:355
+msgid "Quality (Gaussian)"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:363
+msgid "Smoother blur, but uses more GPU."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:368
+msgid "Animated wallpapers:"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:369
+msgid "Update the glass every frame"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:377
+msgid ""
+"Runs at about 60 FPS and can noticeably increase CPU/GPU usage. Only needed "
+"for video or animated wallpapers."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:378
+msgid ""
+"Only needed for video or animated wallpapers. Static wallpapers and "
+"slideshows update automatically."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/GlassAppearancePage.qml:383
+msgid "Reset blur settings"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:39
+msgid "Calendar"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:40
+msgid "Clock"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:41
+msgid "World Clock"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:42
+msgid "Timer"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:43
+msgid "Weather"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:44
+msgid "Music"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:58
+msgid "Liquid Glass Widgets"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:64
+msgid ""
+"A set of macOS-Tahoe style widgets for KDE Plasma, all sharing one liquid-"
+"glass backdrop."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:77
+msgid "Widgets in this set"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:108
+msgid "Browse and install the full set on <a href=\"%1\">GitHub</a>."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:173
+msgid "Also try out: Nothing Widgets"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:181
+msgid ""
+"Check out my other widget set. Nothing OS inspired widgets for KDE Plasma."
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:187
+msgid "Get Nothing Widgets"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:224
+msgid "Buy me a coffee"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:231
+msgid "Website"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/config/ConfigAbout.qml:238
+msgid "Reddit"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/main.qml:17
+msgid "Adjust Date and Time…"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:29
+msgid "Glass Style"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:38
+msgid "Apply Copied Style"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:49
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:64
+msgid "Buy Me a Coffee"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:115
+msgid "Support Liquid Glass Widgets"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:125
+msgid "Opening your browser…"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:126
+msgid ""
+"This opens buymeacoffee.com in your web browser. Thanks for considering it!"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:157
+msgid "Close"
+msgstr ""
+
+#: packages/clock-analog-2/contents/ui/components/WidgetActions.qml:157
+msgid "Not now"
 msgstr ""

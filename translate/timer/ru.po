@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_com.jaxparrow07.macoswidgets.timer 1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/jaxparrow07/macos-widgets/issues\n"
-"POT-Creation-Date: 2026-06-14 18:01+0530\n"
+"POT-Creation-Date: 2026-10-11 17:48+0530\n"
 "PO-Revision-Date: 2026-06-14 18:01+0530\n"
 "Last-Translator: Russian translation contributors\n"
 "Language-Team: Russian\n"
@@ -20,114 +20,351 @@ msgstr ""
 msgid "Appearance"
 msgstr "Оформление"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:55
-msgid "Applied!"
-msgstr "Применено!"
+#: packages/timer/contents/config/config.qml:11
+msgid "More & Support"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:57
-msgid "Invalid config string"
-msgstr "Недопустимая строка конфигурации"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:119
+msgid "Style applied. Press Apply to keep it."
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:73
-msgid "Preset:"
-msgstr "Предустановка:"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:121
+msgid "The clipboard doesn't contain a copied style."
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:78
-msgid "Copy style"
-msgstr "Копировать стиль"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:148
+msgid "Style"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:83
-msgid "Copied!"
-msgstr "Скопировано!"
-
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:91
-msgid "Paste style"
-msgstr "Вставить стиль"
-
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:118
-msgid "Style:"
-msgstr "Стиль:"
-
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:119
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:149
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:166
 msgid "Glass"
 msgstr "Стекло"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:119
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:150
+msgid "Blur & performance"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:165
+msgid "Style:"
+msgstr "Стиль:"
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:166
 msgid "Solid"
 msgstr "Сплошной"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:124
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:171
 msgid "Appearance:"
 msgstr "Оформление:"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:125
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:172
 msgid "Dark"
 msgstr "Тёмное"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:125
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:172
 msgid "Light"
 msgstr "Светлое"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:125
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:172
 msgid "Follow system"
 msgstr "Как в системе"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:130
-msgid "Corner radius (px):"
-msgstr "Радиус углов (пикс.):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:177
+msgid "Glass tint:"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:136
-msgid "Roundness (×10, 2.0..10.0):"
-msgstr "Скруглённость (×10, 2,0…10,0):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:180
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:288
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:302
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:309
+#, javascript-format
+msgctxt "percentage"
+msgid "%1%"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:148
-msgid "Glass effect"
-msgstr "Эффект стекла"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:185
+msgid "Shape"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:153
-msgid "Refraction thickness (px):"
-msgstr "Толщина преломления (пикс.):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:191
+msgid "Corner radius:"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:159
-msgid "Index of refraction (×100):"
-msgstr "Показатель преломления (×100):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:194
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:281
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:349
+msgctxt "pixels"
+msgid "%1 px"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:165
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:199
+msgid "Corner smoothness:"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:218
+msgid "Share"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:222
+msgid "Style preset:"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:227
+msgid "Copy style"
+msgstr "Копировать стиль"
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:232
+msgid "Copied. Paste it into another Liquid Glass widget."
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:238
+msgid "Paste style"
+msgstr "Вставить стиль"
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:267
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:336
+msgid "These settings only apply to the Glass style."
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:279
+msgid "Edge thickness:"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:286
 msgid "Refraction strength:"
 msgstr "Сила преломления:"
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:171
-msgid "Tint alpha (%):"
-msgstr "Прозрачность оттенка (%):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:293
+msgid "Refraction index:"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:177
-msgid "Chromatic aberration (%):"
-msgstr "Хроматическая аберрация (%):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:300
+msgid "Color fringing:"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:183
-msgid "Specular strength (%):"
-msgstr "Интенсивность блика (%):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:307
+msgid "Edge highlight:"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:189
-msgid "Blur radius (px):"
-msgstr "Радиус размытия (пикс.):"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:314
+msgid "Reset glass settings"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:195
-msgid "Realtime refraction:"
-msgstr "Преломление в реальном времени:"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:347
+msgid "Blur radius:"
+msgstr ""
 
-#: packages/timer/contents/ui/config/ConfigAppearance.qml:196
-msgid "Recapture every frame (enable for video wallpapers)"
-msgstr "Обновлять каждый кадр (включите для видеообоев)"
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:349
+msgid "Off"
+msgstr ""
 
-#: packages/timer/contents/ui/main.qml:67
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:354
+msgid "Blur quality:"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:355
+msgid "Performance (Dual Kawase)"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:355
+msgid "Quality (Gaussian)"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:363
+msgid "Smoother blur, but uses more GPU."
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:368
+msgid "Animated wallpapers:"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:369
+msgid "Update the glass every frame"
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:377
+msgid ""
+"Runs at about 60 FPS and can noticeably increase CPU/GPU usage. Only needed "
+"for video or animated wallpapers."
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:378
+msgid ""
+"Only needed for video or animated wallpapers. Static wallpapers and "
+"slideshows update automatically."
+msgstr ""
+
+#: packages/timer/contents/ui/config/GlassAppearancePage.qml:383
+msgid "Reset blur settings"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:39
+msgid "Calendar"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:40
+msgid "Clock"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:41
+msgid "World Clock"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:42
+#: packages/timer/contents/ui/main.qml:85
 msgid "Timer"
 msgstr "Таймер"
 
-#: packages/timer/contents/ui/main.qml:68
+#: packages/timer/contents/ui/config/ConfigAbout.qml:43
+msgid "Weather"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:44
+msgid "Music"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:58
+msgid "Liquid Glass Widgets"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:64
+msgid ""
+"A set of macOS-Tahoe style widgets for KDE Plasma, all sharing one liquid-"
+"glass backdrop."
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:77
+msgid "Widgets in this set"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:108
+msgid "Browse and install the full set on <a href=\"%1\">GitHub</a>."
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:173
+msgid "Also try out: Nothing Widgets"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:181
+msgid ""
+"Check out my other widget set. Nothing OS inspired widgets for KDE Plasma."
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:187
+msgid "Get Nothing Widgets"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:224
+msgid "Buy me a coffee"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:231
+msgid "Website"
+msgstr ""
+
+#: packages/timer/contents/ui/config/ConfigAbout.qml:238
+msgid "Reddit"
+msgstr ""
+
+#: packages/timer/contents/ui/main.qml:18
+msgid "Pause"
+msgstr ""
+
+#: packages/timer/contents/ui/main.qml:18
+msgid "Resume"
+msgstr ""
+
+#: packages/timer/contents/ui/main.qml:18
+msgid "Start"
+msgstr ""
+
+#: packages/timer/contents/ui/main.qml:24
+msgid "Reset"
+msgstr ""
+
+#: packages/timer/contents/ui/main.qml:86
 msgid "Time's up!"
 msgstr "Время вышло!"
 
-#: packages/timer/contents/ui/main.qml:308
+#: packages/timer/contents/ui/main.qml:327
 msgid "Presets"
 msgstr "Предустановки"
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:29
+msgid "Glass Style"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:38
+msgid "Apply Copied Style"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:49
+#: packages/timer/contents/ui/components/WidgetActions.qml:64
+msgid "Buy Me a Coffee"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:115
+msgid "Support Liquid Glass Widgets"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:125
+msgid "Opening your browser…"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:126
+msgid ""
+"This opens buymeacoffee.com in your web browser. Thanks for considering it!"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:157
+msgid "Close"
+msgstr ""
+
+#: packages/timer/contents/ui/components/WidgetActions.qml:157
+msgid "Not now"
+msgstr ""
+
+#~ msgid "Applied!"
+#~ msgstr "Применено!"
+
+#~ msgid "Invalid config string"
+#~ msgstr "Недопустимая строка конфигурации"
+
+#~ msgid "Preset:"
+#~ msgstr "Предустановка:"
+
+#~ msgid "Copied!"
+#~ msgstr "Скопировано!"
+
+#~ msgid "Corner radius (px):"
+#~ msgstr "Радиус углов (пикс.):"
+
+#~ msgid "Roundness (×10, 2.0..10.0):"
+#~ msgstr "Скруглённость (×10, 2,0…10,0):"
+
+#~ msgid "Glass effect"
+#~ msgstr "Эффект стекла"
+
+#~ msgid "Refraction thickness (px):"
+#~ msgstr "Толщина преломления (пикс.):"
+
+#~ msgid "Index of refraction (×100):"
+#~ msgstr "Показатель преломления (×100):"
+
+#~ msgid "Tint alpha (%):"
+#~ msgstr "Прозрачность оттенка (%):"
+
+#~ msgid "Chromatic aberration (%):"
+#~ msgstr "Хроматическая аберрация (%):"
+
+#~ msgid "Specular strength (%):"
+#~ msgstr "Интенсивность блика (%):"
+
+#~ msgid "Blur radius (px):"
+#~ msgstr "Радиус размытия (пикс.):"
+
+#~ msgid "Realtime refraction:"
+#~ msgstr "Преломление в реальном времени:"
+
+#~ msgid "Recapture every frame (enable for video wallpapers)"
+#~ msgstr "Обновлять каждый кадр (включите для видеообоев)"

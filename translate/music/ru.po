@@ -5,7 +5,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: plasma_applet_com.jaxparrow07.macoswidgets.music 1.0\n"
 "Report-Msgid-Bugs-To: https://github.com/jaxparrow07/macos-widgets/issues\n"
-"POT-Creation-Date: 2026-06-14 18:01+0530\n"
+"POT-Creation-Date: 2026-10-11 17:48+0530\n"
 "PO-Revision-Date: 2026-06-14 18:01+0530\n"
 "Last-Translator: Russian translation contributors\n"
 "Language-Team: Russian\n"
@@ -16,151 +16,409 @@ msgstr ""
 "Plural-Forms: nplurals=3; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && "
 "n%10<=4 && (n%100<10 || n%100>=20) ? 1 : 2);\n"
 
-#: packages/music/contents/config/config.qml:6
+#: packages/music/contents/config/config.qml:7
+#: packages/music/contents/ui/config/ConfigAbout.qml:44
+msgid "Music"
+msgstr ""
+
+#: packages/music/contents/config/config.qml:12
 msgid "Appearance"
 msgstr "Оформление"
 
-#: packages/music/contents/config/config.qml:11
-#: packages/music/contents/ui/widget/WideLayout.qml:234
-#: packages/music/contents/ui/widget/TallWideLayout.qml:205
-msgid "Lyrics"
-msgstr "Текст песни"
+#: packages/music/contents/config/config.qml:17
+msgid "More & Support"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:55
-msgid "Applied!"
-msgstr "Применено!"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:119
+msgid "Style applied. Press Apply to keep it."
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:57
-msgid "Invalid config string"
-msgstr "Недопустимая строка конфигурации"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:121
+msgid "The clipboard doesn't contain a copied style."
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:73
-msgid "Preset:"
-msgstr "Предустановка:"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:148
+msgid "Style"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:78
-msgid "Copy style"
-msgstr "Копировать стиль"
-
-#: packages/music/contents/ui/config/ConfigAppearance.qml:83
-msgid "Copied!"
-msgstr "Скопировано!"
-
-#: packages/music/contents/ui/config/ConfigAppearance.qml:91
-msgid "Paste style"
-msgstr "Вставить стиль"
-
-#: packages/music/contents/ui/config/ConfigAppearance.qml:118
-msgid "Style:"
-msgstr "Стиль:"
-
-#: packages/music/contents/ui/config/ConfigAppearance.qml:119
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:149
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:166
 msgid "Glass"
 msgstr "Стекло"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:119
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:150
+msgid "Blur & performance"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:165
+msgid "Style:"
+msgstr "Стиль:"
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:166
 msgid "Solid"
 msgstr "Сплошной"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:124
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:171
 msgid "Appearance:"
 msgstr "Оформление:"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:125
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:172
 msgid "Dark"
 msgstr "Тёмное"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:125
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:172
 msgid "Light"
 msgstr "Светлое"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:125
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:172
 msgid "Follow system"
 msgstr "Как в системе"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:130
-msgid "Corner radius (px):"
-msgstr "Радиус углов (пикс.):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:177
+msgid "Glass tint:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:136
-msgid "Roundness (×10, 2.0..10.0):"
-msgstr "Скруглённость (×10, 2,0…10,0):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:180
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:288
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:302
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:309
+#: packages/music/contents/ui/config/ConfigMusic.qml:209
+#: packages/music/contents/ui/config/ConfigMusic.qml:216
+#: packages/music/contents/ui/config/ConfigMusic.qml:229
+#: packages/music/contents/ui/config/ConfigMusic.qml:236
+#, javascript-format
+msgctxt "percentage"
+msgid "%1%"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:148
-msgid "Glass effect"
-msgstr "Эффект стекла"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:185
+msgid "Shape"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:153
-msgid "Refraction thickness (px):"
-msgstr "Толщина преломления (пикс.):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:191
+msgid "Corner radius:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:159
-msgid "Index of refraction (×100):"
-msgstr "Показатель преломления (×100):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:194
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:281
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:349
+msgctxt "pixels"
+msgid "%1 px"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:165
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:199
+msgid "Corner smoothness:"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:218
+msgid "Share"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:222
+msgid "Style preset:"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:227
+msgid "Copy style"
+msgstr "Копировать стиль"
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:232
+msgid "Copied. Paste it into another Liquid Glass widget."
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:238
+msgid "Paste style"
+msgstr "Вставить стиль"
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:267
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:336
+msgid "These settings only apply to the Glass style."
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:279
+msgid "Edge thickness:"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:286
 msgid "Refraction strength:"
 msgstr "Сила преломления:"
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:171
-msgid "Tint alpha (%):"
-msgstr "Прозрачность оттенка (%):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:293
+msgid "Refraction index:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:177
-msgid "Chromatic aberration (%):"
-msgstr "Хроматическая аберрация (%):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:300
+msgid "Color fringing:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:183
-msgid "Specular strength (%):"
-msgstr "Интенсивность блика (%):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:307
+msgid "Edge highlight:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:189
-msgid "Blur radius (px):"
-msgstr "Радиус размытия (пикс.):"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:314
+msgid "Reset glass settings"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:195
-msgid "Realtime refraction:"
-msgstr "Преломление в реальном времени:"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:347
+msgid "Blur radius:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigAppearance.qml:196
-msgid "Recapture every frame (enable for video wallpapers)"
-msgstr "Обновлять каждый кадр (включите для видеообоев)"
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:349
+msgid "Off"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:21
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:354
+msgid "Blur quality:"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:355
+msgid "Performance (Dual Kawase)"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:355
+msgid "Quality (Gaussian)"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:363
+msgid "Smoother blur, but uses more GPU."
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:368
+msgid "Animated wallpapers:"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:369
+msgid "Update the glass every frame"
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:377
+msgid ""
+"Runs at about 60 FPS and can noticeably increase CPU/GPU usage. Only needed "
+"for video or animated wallpapers."
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:378
+msgid ""
+"Only needed for video or animated wallpapers. Static wallpapers and "
+"slideshows update automatically."
+msgstr ""
+
+#: packages/music/contents/ui/config/GlassAppearancePage.qml:383
+msgid "Reset blur settings"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:69
+msgid "Players"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:70
+#: packages/music/contents/ui/widget/WideLayout.qml:258
+#: packages/music/contents/ui/widget/TallWideLayout.qml:221
+msgid "Lyrics"
+msgstr "Текст песни"
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:85
+msgid "Players:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:86
+msgid "Only show the checked players"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:93
+msgid "Hide the checked players"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:101
+msgid "Checked players are ignored by the widget."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:102
+msgid "When nothing is checked, every player is shown."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:106
+msgid "Detected players:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:108
+msgid "Refresh"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:128
+msgid "No media players are running. Start one, then press Refresh."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:134
+msgid "When idle"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:139
+msgid "Auto-hide:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:140
+msgid "Hide the widget when nothing is playing"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:145
+msgid "Hide after:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:150
+msgctxt "seconds"
+msgid "%1 s"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:151
+msgctxt "minutes"
+msgid "%1 min"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:152
+msgctxt "minutes and seconds"
+msgid "%1 min %2 s"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:157
+msgid "Album art"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:162
+msgid "Cover refresh:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:163
+msgid "Briefly pause and resume on track change"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:170
+msgid ""
+"Helps players that don't update the cover on their own. Causes a short "
+"playback hiccup."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:183
+msgid "Track title:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:184
+msgid "Show the track title above the lyrics"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:189
+msgid "Upcoming lines:"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:190
+msgid "Blur them"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:197
+msgid "Turn off on slower hardware."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigMusic.qml:202
 msgid "Opacity"
 msgstr "Непрозрачность"
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:26
-msgid "Active line (%):"
-msgstr "Активная строка (%):"
+#: packages/music/contents/ui/config/ConfigMusic.qml:207
+msgid "Current line:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:32
-msgid "Inactive lines (%):"
-msgstr "Неактивные строки (%):"
+#: packages/music/contents/ui/config/ConfigMusic.qml:214
+msgid "Other lines:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:38
-msgid "Size"
-msgstr "Размер"
+#: packages/music/contents/ui/config/ConfigMusic.qml:221
+msgid "Text size"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:43
-msgid "Wide layout font (‰):"
-msgstr "Шрифт широкого макета (‰):"
+#: packages/music/contents/ui/config/ConfigMusic.qml:227
+msgid "Wide layout:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:49
-msgid "Tall layout font (‰):"
-msgstr "Шрифт высокого макета (‰):"
+#: packages/music/contents/ui/config/ConfigMusic.qml:234
+msgid "Tall layout:"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:55
-msgid "Effects"
-msgstr "Эффекты"
+#: packages/music/contents/ui/config/ConfigMusic.qml:241
+msgid "Source"
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:60
-msgid "Blur upcoming lines:"
-msgstr "Размывать следующие строки:"
+#: packages/music/contents/ui/config/ConfigMusic.qml:259
+msgid ""
+"Lyrics come from <a href=\"%1\">LRCLIB</a> (lrclib.net), a free, nonprofit "
+"database of user-contributed lyrics. No account or API key is needed."
+"<br><br>When the track changes, its title, artist, album and length are sent "
+"to lrclib.net to find lyrics, even if the lyrics view is closed. As with any "
+"web request, LRCLIB also sees your IP address.<br><br>LRCLIB doesn't publish "
+"a separate privacy policy; its <a href=\"%2\">API Terms of Use</a> apply. "
+"Lyrics may be protected by copyright and are shown for personal use only."
+msgstr ""
 
-#: packages/music/contents/ui/config/ConfigLyrics.qml:61
-msgid "Blur upcoming lyrics lines (disable on slow hardware)"
-msgstr "Размывать следующие строки текста (отключите на слабом оборудовании)"
+#: packages/music/contents/ui/config/ConfigAbout.qml:39
+msgid "Calendar"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:40
+msgid "Clock"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:41
+msgid "World Clock"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:42
+msgid "Timer"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:43
+msgid "Weather"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:58
+msgid "Liquid Glass Widgets"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:64
+msgid ""
+"A set of macOS-Tahoe style widgets for KDE Plasma, all sharing one liquid-"
+"glass backdrop."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:77
+msgid "Widgets in this set"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:108
+msgid "Browse and install the full set on <a href=\"%1\">GitHub</a>."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:173
+msgid "Also try out: Nothing Widgets"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:181
+msgid ""
+"Check out my other widget set. Nothing OS inspired widgets for KDE Plasma."
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:187
+msgid "Get Nothing Widgets"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:224
+msgid "Buy me a coffee"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:231
+msgid "Website"
+msgstr ""
+
+#: packages/music/contents/ui/config/ConfigAbout.qml:238
+msgid "Reddit"
+msgstr ""
 
 #: packages/music/contents/ui/widget/SyncedLyricsView.qml:236
 msgid "No lyrics available"
@@ -173,3 +431,123 @@ msgid ""
 msgstr ""
 "Не удалось загрузить текст песни\n"
 "Нажмите, чтобы повторить"
+
+#: packages/music/contents/ui/main.qml:19
+msgid "Pause"
+msgstr ""
+
+#: packages/music/contents/ui/main.qml:19
+msgid "Play"
+msgstr ""
+
+#: packages/music/contents/ui/main.qml:26
+msgid "Next Track"
+msgstr ""
+
+#: packages/music/contents/ui/main.qml:33
+msgid "Previous Track"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:29
+msgid "Glass Style"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:38
+msgid "Apply Copied Style"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:49
+#: packages/music/contents/ui/components/WidgetActions.qml:64
+msgid "Buy Me a Coffee"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:115
+msgid "Support Liquid Glass Widgets"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:125
+msgid "Opening your browser…"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:126
+msgid ""
+"This opens buymeacoffee.com in your web browser. Thanks for considering it!"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:157
+msgid "Close"
+msgstr ""
+
+#: packages/music/contents/ui/components/WidgetActions.qml:157
+msgid "Not now"
+msgstr ""
+
+#~ msgid "Applied!"
+#~ msgstr "Применено!"
+
+#~ msgid "Invalid config string"
+#~ msgstr "Недопустимая строка конфигурации"
+
+#~ msgid "Preset:"
+#~ msgstr "Предустановка:"
+
+#~ msgid "Copied!"
+#~ msgstr "Скопировано!"
+
+#~ msgid "Corner radius (px):"
+#~ msgstr "Радиус углов (пикс.):"
+
+#~ msgid "Roundness (×10, 2.0..10.0):"
+#~ msgstr "Скруглённость (×10, 2,0…10,0):"
+
+#~ msgid "Glass effect"
+#~ msgstr "Эффект стекла"
+
+#~ msgid "Refraction thickness (px):"
+#~ msgstr "Толщина преломления (пикс.):"
+
+#~ msgid "Index of refraction (×100):"
+#~ msgstr "Показатель преломления (×100):"
+
+#~ msgid "Tint alpha (%):"
+#~ msgstr "Прозрачность оттенка (%):"
+
+#~ msgid "Chromatic aberration (%):"
+#~ msgstr "Хроматическая аберрация (%):"
+
+#~ msgid "Specular strength (%):"
+#~ msgstr "Интенсивность блика (%):"
+
+#~ msgid "Blur radius (px):"
+#~ msgstr "Радиус размытия (пикс.):"
+
+#~ msgid "Realtime refraction:"
+#~ msgstr "Преломление в реальном времени:"
+
+#~ msgid "Recapture every frame (enable for video wallpapers)"
+#~ msgstr "Обновлять каждый кадр (включите для видеообоев)"
+
+#~ msgid "Active line (%):"
+#~ msgstr "Активная строка (%):"
+
+#~ msgid "Inactive lines (%):"
+#~ msgstr "Неактивные строки (%):"
+
+#~ msgid "Size"
+#~ msgstr "Размер"
+
+#~ msgid "Wide layout font (‰):"
+#~ msgstr "Шрифт широкого макета (‰):"
+
+#~ msgid "Tall layout font (‰):"
+#~ msgstr "Шрифт высокого макета (‰):"
+
+#~ msgid "Effects"
+#~ msgstr "Эффекты"
+
+#~ msgid "Blur upcoming lines:"
+#~ msgstr "Размывать следующие строки:"
+
+#~ msgid "Blur upcoming lyrics lines (disable on slow hardware)"
+#~ msgstr ""
+#~ "Размывать следующие строки текста (отключите на слабом оборудовании)"
