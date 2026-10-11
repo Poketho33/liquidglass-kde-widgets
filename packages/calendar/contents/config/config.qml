@@ -6,16 +6,16 @@ import org.kde.plasma.workspace.calendar as PlasmaCalendar
 ConfigModel {
     id: configModel
 
-    ConfigCategory {
-        name: i18n("Appearance")
-        icon: "preferences-desktop-theme"
-        source: "config/ConfigAppearance.qml"
-    }
     // General + Events (Akonadi) as tabs on one page.
     ConfigCategory {
         name: i18n("Calendar")
         icon: "view-calendar"
         source: "config/ConfigCalendar.qml"
+    }
+    ConfigCategory {
+        name: i18n("Appearance")
+        icon: "preferences-desktop-theme"
+        source: "config/ConfigAppearance.qml"
     }
 
     // Remaining plugins (holidays, astronomical, etc.) use their own built-in config pages.
