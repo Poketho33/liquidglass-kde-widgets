@@ -115,11 +115,18 @@ This also merges the changes into existing `.po` files so nothing is lost.
 
 ### Build the translations
 
+The `.po` files under `translate/` are the editable translation sources. The
+compiled `.mo` catalogs are generated output: they are written beneath each
+widget’s `contents/locale/` directory and are ignored by Git.
+
 Translations compile automatically during `./install.sh` and `./package.sh`.
-To do it by hand:
+Single-widget commands compile only that widget; `--all` compiles all widget
+translations once before installation or packaging begins. A translation
+compiler error stops the command. To do it by hand:
 
 ```bash
-./translate/build.sh
+./translate/build.sh              # all widgets
+./translate/build.sh weather      # one widget
 ```
 
 Output lands at:
@@ -130,7 +137,9 @@ packages/<widget>/contents/locale/<lang>/LC_MESSAGES/plasma_applet_<id>.mo
 
 ### Requirements
 
-Both scripts need `gettext`:
+The translation scripts and automatic package/install steps require
+`gettext` (`msgfmt`; template regeneration also uses `xgettext` and
+`msgmerge`):
 
 ```bash
 sudo apt install gettext      # Debian/Ubuntu

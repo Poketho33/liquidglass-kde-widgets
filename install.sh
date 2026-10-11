@@ -1,15 +1,13 @@
 #!/usr/bin/env bash
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Compile translations (.po -> .mo) so they ship with the widget. No-op without gettext.
+# Compile translations (.po -> .mo) so they ship with the widget.
 build_translations() {
-	if command -v msgfmt &>/dev/null; then
-		echo "[*] Compiling translations..."
-		"${SCRIPT_DIR}/translate/build.sh" >/dev/null 2>&1 || true
-	fi
+	echo "[*] Compiling translations..."
+	"${SCRIPT_DIR}/translate/build.sh" "$@"
 }
 
 # Colors
@@ -231,7 +229,7 @@ if [[ "$WANT_ALL" == "true" || "$WANT_TEST" == "true" ]]; then
 	_success "All done!"
 
 elif [[ -n "$WIDGET_NAME" && -d "packages/$WIDGET_NAME" ]]; then
-	build_translations
+	build_translations "$WIDGET_NAME"
 	install_widget "$WIDGET_NAME" "false"
 	echo ""
 	_success "Installation complete!"
