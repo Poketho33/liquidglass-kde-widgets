@@ -15,6 +15,7 @@ import QtQuick.Controls as QQC2
 import QtQuick.Effects
 import QtQuick.Layouts
 import org.kde.kirigami as Kirigami
+import "../components/links.js" as Links
 
 // Outer scroll view gives the page room to breathe and keeps the content
 // padded away from the dialog edges at any window size.
@@ -25,11 +26,11 @@ Kirigami.ScrollablePage {
     rightPadding: Kirigami.Units.gridUnit * 2
 
     // ── Links ─────────────────────────────────────────────────────────────
-    readonly property string repoUrl: "https://github.com/jaxparrow07/liquidglass-kde-widgets"
-    readonly property string nothingUrl: "https://github.com/jaxparrow07/nothing-kde-widgets"
-    readonly property string kofiUrl: "https://ko-fi.com/devrinth"
-    readonly property string siteUrl: "https://jackfaithweb.com"
-    readonly property string redditUrl: "https://reddit.com/user/zinxyzcool"
+    readonly property string repoUrl: Links.repo
+    readonly property string nothingUrl: Links.nothing
+    readonly property string bmcUrl: Links.bmc
+    readonly property string siteUrl: Links.site
+    readonly property string redditUrl: Links.reddit
 
     // ── The widgets in this set (names only) ──────────────────────────────
     // Kept in sync by hand with packages/*/metadata.json (test-* widgets and
@@ -201,18 +202,39 @@ Kirigami.ScrollablePage {
             Layout.topMargin: Kirigami.Units.smallSpacing
             spacing: Kirigami.Units.largeSpacing
 
-            QQC2.Button {
-                // Brand SVG symlinked from 1-common/icons/about (white-filled).
-                icon.source: Qt.resolvedUrl("../icons/about/kofi.svg")
-                text: i18n("Support on Ko-fi")
-                onClicked: Qt.openUrlExternally(page.kofiUrl)
+            // Official Buy Me a Coffee button artwork (1-common/icons/about),
+            // used as-is so the brand look is never altered by the theme.
+            Image {
+                id: bmcButton
+                source: Qt.resolvedUrl("../icons/about/bmc-button.svg")
+                // SVG is 545x153; rasterized at this height (about 45px), width follows.
+                sourceSize.height: Kirigami.Units.gridUnit * 2.5
+                fillMode: Image.PreserveAspectFit
+                smooth: true
+                opacity: bmcMouse.containsMouse ? 0.9 : 1.0
+                Behavior on opacity { NumberAnimation { duration: 120 } }
+
+                MouseArea {
+                    id: bmcMouse
+                    anchors.fill: parent
+                    hoverEnabled: true
+                    cursorShape: Qt.PointingHandCursor
+                    onClicked: Qt.openUrlExternally(page.bmcUrl)
+                }
+                QQC2.ToolTip.visible: bmcMouse.containsMouse
+                QQC2.ToolTip.text: i18n("Buy me a coffee")
             }
             QQC2.Button {
+                // Match the Buy Me a Coffee button size.
+                implicitHeight: bmcButton.height
+                implicitWidth: Math.max(bmcButton.width, implicitContentWidth + leftPadding + rightPadding)
                 icon.name: "globe"
                 text: i18n("Website")
                 onClicked: Qt.openUrlExternally(page.siteUrl)
             }
             QQC2.Button {
+                implicitHeight: bmcButton.height
+                implicitWidth: Math.max(bmcButton.width, implicitContentWidth + leftPadding + rightPadding)
                 icon.source: Qt.resolvedUrl("../icons/about/reddit.svg")
                 text: i18n("Reddit")
                 onClicked: Qt.openUrlExternally(page.redditUrl)

@@ -3,13 +3,18 @@ import org.kde.plasma.configuration
 
 ConfigModel {
     ConfigCategory {
+        name: i18n("General")
+        icon: "preferences-system"
+        source: "config/ConfigGeneral.qml"
+    }
+    ConfigCategory {
         name: i18n("Appearance")
         icon: "preferences-desktop-theme"
         source: "config/ConfigAppearance.qml"
     }
     ConfigCategory {
         name: i18n("More & Support")
-        icon: "love"
+        icon: Qt.resolvedUrl("../ui/icons/about/bmc-icon.svg")
         source: "config/ConfigAbout.qml"
     }
 }

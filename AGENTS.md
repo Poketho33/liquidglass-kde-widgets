@@ -59,43 +59,54 @@ Widgets follow a consistent shape — look at `packages/calendar/contents/ui/mai
 - `PlasmoidItem { Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground; preferredRepresentation: fullRepresentation }` — the glass IS the background.
 - `MacOSColors { id: colors; styleMode: plasmoid.configuration.styleMode; appearance: plasmoid.configuration.appearance }` — semantic color/opacity tokens. Use `colors.foreground`, `colors.cardBackground`, etc.; never hardcode colors or branch on `colors.isGlass` / `colors.isLight` inline.
 - Standard glass property bindings in every main.qml (cornerRadius, roundnessX10/10, refractThickness, refractIORx100/100, refractScale, tintAlphaPct/100, chromaStrengthPct/100, specStrengthPct/100, realtimeRefraction). Config stores fractional values scaled by 100 (or 10 for roundness) because kcfg entries are Int.
-- Plasmoid config lives in `contents/config/main.xml` (kcfg) + `contents/config/config.qml` (ConfigModel) + `contents/ui/config/ConfigGeneral.qml` (Kirigami.FormLayout with `cfg_*` alias properties). The three files must agree entry-by-entry.
+- Plasmoid config lives in `contents/config/main.xml` (kcfg) + `contents/config/config.qml` (ConfigModel) + `contents/ui/config/*.qml` pages (`cfg_*` alias properties). They must agree entry-by-entry.
+- **Appearance page is shared.** `1-common/config/GlassAppearancePage.qml` is a tabbed `KCMUtils.SimpleKCM` (Style / Glass / Blur & performance) holding every glass control; `SliderField.qml` is its slider+value control. Both are symlinked into every package's `contents/ui/config/`, next to a thin `ConfigAppearance.qml`: `1-common/config/ConfigAppearance.qml` (standard), `ConfigAppearanceAnalog.qml` (adds `opaqueBackground`), or the glass-text clock's own file. Variants add controls via `styleExtras`, hide shape/tint via `showShape`/`showTint`, and extend copy/paste via `serializeExtras`/`deserializeExtras`. Don't copy the page into a package; add a hook instead.
+- Config pages must scroll and use KDE margins: use `KCMUtils.SimpleKCM` (or `AbstractKCM` + your own `ScrollView`) as the root, never a bare `ColumnLayout`/`FormLayout`, or content past the window height is clipped. For tabs, put a `QQC2.TabBar` in `header` with `headerPaddingEnabled: false`; keep every tab's controls instantiated (toggle `visible`) so all `cfg_*` aliases are saved by one Apply.
 - Widget-specific QML components go under `contents/ui/widget/` (e.g. calendar's `TodayBadge.qml`, clock-square's `TickRing.qml` and `DigitalTime.qml`).
 
-## MacOSColors token reference
+## Translatable strings
 
-`1-common/components/MacOSColors.qml` is the single source of truth for all colors and opacities. **Never hardcode a color or branch on `colors.isGlass` / `colors.isLight` in widget code** — add a token here instead.
+**Every user-visible string must go through `i18n()`** (or `i18nc` / `i18np`), in config pages, widgets, context menus, dialogs, tooltips, placeholders and empty states. Never hardcode English text, and never build a sentence by concatenating fragments:
 
-**Mode axes:**
-- `styleMode`: 0 = Glass (translucent shader), 1 = Solid (opaque)
-- `appearance`: 0 = Dark, 1 = Light, 2 = Follow system
-- `isGlass` / `isSolid` — derived booleans
-- `isLight` — **always false in glass mode** (`!isGlass && (appearance===1 || systemLight)`). Glass is always dark-on-dark.
+```qml
+text: i18n("Lyrics come from %1.", name)             // placeholders, not "…" + name
+text: i18nc("percentage", "%1%", value)              // i18nc: a short context for translators
+text: i18np("%1 day", "%1 days", n)                  // plurals
+```
 
-**Core palette (solid mode, adapts light/dark):**
-- `background`, `surface`, `surfaceAlt` — fill colors
-- `labelPrimary/Secondary/Tertiary/Quaternary` — text hierarchy
-- `separator` — divider lines
-- `solidBackground`, `solidForeground` — opaque widget bg/fg
+- Strings are extracted per package by `./translate/merge.sh` (it scans `packages/<name>/contents/**/*.qml`, including the symlinked shared files, so a string in `1-common/` ends up in every widget's template). **Run it after adding or changing any `i18n()` string**, then commit `translate/`. It keeps existing `.po` translations and only adds the new strings untranslated, so there is nothing to translate by hand. See `translate/TRANSLATE.md`.
+- Changing the wording of an existing string makes translators lose it (the old translation becomes an obsolete `#~` entry). Prefer adding a new string over a small edit, and don't reword for taste.
+- `i18n()` only exists in QML, not in `.pragma library` `.js` files (`links.js`, `styleCodec.js`). Translate in the QML caller and pass the text in.
+- Links inside translated text use placeholders for the URL (`i18n("… <a href=\"%1\">LRCLIB</a> …", url)`) so translators can't break them. The widget names in `metadata.json` are not translated.
+- Values shown to users (units, "Off", percentages) are strings too: wrap them, including those returned from a `format:` function.
+- `console.log` messages are for developers and are not translated.
 
-**Glass-aware tokens (use these in widgets):**
-- `foreground` — white in glass, `solidForeground` in solid
-- `glassTint`, `glassFallbackOpacity` — passed directly to `LiquidGlass`
-- `todayAccent` — white in glass, red in solid (calendar today badge)
-- `punchOutText` — `true` in glass (use destination-out canvas compositing for badge text)
+## Design guidelines & color tokens
 
-**Card tokens:**
-- `cardBackground` — `#ffffff` dark modes, `#000000` light solid
-- `cardBackgroundOpacity` — base opacity (0.10 dark, 0.08 light)
-- `cardHoverOpacity` — hovered state (0.17 dark, 0.14 light)
-- `cardPressOpacity` — pressed state (0.22 dark, 0.20 light)
+**Read [`DESIGN.md`](DESIGN.md) before any visual or UI work** (new widgets, layout, colors, fonts, motion). It holds the design target, the style-mode matrix, typography, sizing constants, motion timings, the pre-PR visual checklist, and the full `MacOSColors` token reference.
 
-**Timer action tokens:**
-- `countdownText` — white in glass, orange `#FF8B00` in solid
-- `actionGreen` / `actionOrange` — icon colors for solid mode buttons
-- `actionGreenBg` / `actionOrangeBg` — button background (solid fill in glass, tinted in solid)
-- `buttonIcon` — white in glass, `solidForeground` in solid (for cancel/neutral buttons)
-- `cancelButtonBg` — semi-white in glass, semi-foreground in solid
+Summary of the rules most often broken (the canonical, full versions are in `DESIGN.md`; if the two disagree, fix this summary):
+- `1-common/components/MacOSColors.qml` is the single source of truth for all colors and opacities. **Never hardcode a color or branch on `colors.isGlass` / `colors.isLight` / `colors.glassIsLight` in widget code**; add a semantic token there instead, and document it in `DESIGN.md`.
+- `isLight` is light *solid* mode only (always false in glass). Light *glass* is the separate `glassIsLight` axis.
+- Every widget must work in Glass Dark, Glass Light, Solid Dark, Solid Light, and the fallback rect.
+
+## New widget contributions: policy (tell the user)
+
+This repo is a curated set of **macOS-style** widgets (the human-readable version of this policy is [`CONTRIBUTING.md`](CONTRIBUTING.md); keep the two consistent). If a user asks you to create a new widget **and they intend to contribute it to this repo** (or it's unclear), tell them this before writing code:
+
+- **Unrelated widgets cannot be merged** into this project.
+- A new widget must start as a **[New widget request](.github/ISSUE_TEMPLATE/new-widget-request.md) issue**, with a macOS/iOS design reference, how it follows `DESIGN.md`, and the reasoning for why it belongs in this repo. Code comes after the request is accepted.
+- If the widget is **unrelated to macOS or looks completely different from it**, suggest they build it as a **separate, standalone widget**, using the liquid-glass shader (`LiquidGlass.qml` + `shaders/`) if they want, under GPL v3 with attribution.
+
+You can still help them build the widget. This note is about what can be merged, not about refusing the work. Changes to existing widgets (fixes, options, translations) don't need a request issue.
+
+If the user **only wants to suggest a widget** (not build it, e.g. a non-developer), don't send them through the design requirements above. Point them to the New widget request issue: a macOS/iOS reference (a screenshot or link is enough) and why it would be useful are all they need. Offer to help word the issue if they want.
+
+## Context menu actions
+
+Right-click entries come from `Plasmoid.contextualActions`. Every `main.qml` instantiates the shared `WidgetActions { id: commonActions }` (`1-common/components/WidgetActions.qml`, symlinked like `LiquidGlass.qml`) and sets `Plasmoid.contextualActions: [widgetSpecificActions].concat(commonActions.list)`. The shared list holds Glass Style toggle, Apply Copied Style and Buy Me a Coffee. "Apply Copied Style" parses the clipboard JSON written by the Appearance page's Copy button via `styleCodec.js`; when you add a style key to `GlassAppearancePage` (or a variant's `serializeExtras`), add its short key there too. Widget-specific actions are `PlasmaCore.Action`s declared in that widget's `main.qml` (weather Refresh, calendar Open/New Event/Manage Calendars, timer and music controls, clock Adjust Date and Time).
+
+**Opening links on Wayland:** "Buy Me a Coffee" in the menu opens a small confirmation window first and only opens the browser from a click inside it. `Qt.openUrlExternally()` asks the compositor for an activation token asynchronously (from the focused window) before launching, and a context menu leaves no focused window. The dialog also must **stay open for a moment after the click** (`closeAfterLaunch`, 2.5 s): closing it immediately cancels the pending token request, and the launch silently never happens while `openUrlExternally` still returns `true`. Links from a config page (`ConfigAbout.qml`) open directly, since the settings window is already focused. All URLs live in `links.js`.
 
 ## Timer / power conventions
 
@@ -105,10 +116,12 @@ Widgets follow a consistent shape — look at `packages/calendar/contents/ui/mai
 
 ## Working with metadata / adding a new widget
 
+If the widget is meant to be contributed here, see the [contribution policy](#new-widget-contributions-policy-tell-the-user) above first, and follow `DESIGN.md`.
+
 1. Copy `packages/calendar/` as a template, rename, edit `metadata.json` (`KPlugin.Id`, `Name`, `Description`, `Version`).
 2. Symlink `LiquidGlass.qml`, `MacOSColors.qml`, and the `shaders` directory from `1-common/components/` into `contents/ui/components/` (use relative paths — check an existing package for exact depth).
 3. Symlink fonts from `1-common/fonts/` into `contents/fonts/` for each font you actually use.
-4. Mirror `contents/config/main.xml` and `contents/ui/config/ConfigGeneral.qml` from an existing package; drop the entries you don't need (e.g. `firstDayOfWeek` is calendar-only).
+4. Mirror `contents/config/main.xml` and `contents/config/config.qml` from an existing package; symlink `ConfigAppearance.qml`, `GlassAppearancePage.qml` and `SliderField.qml` from `1-common/config/` into `contents/ui/config/`; drop the entries you don't need (e.g. `firstDayOfWeek` is calendar-only).
 5. `./install.sh <name>` to register with `kpackagetool6`.
 
 ## Compact panel representation
@@ -205,14 +218,14 @@ Call `goToYearAndMonth(year, 1basedMonth)` — note month is 1-based, opposite o
 
 ### Config entries
 
-Three files must stay in sync (see `contents/config/main.xml`, `contents/ui/config/ConfigGeneral.qml`):
+Three files must stay in sync (see `contents/config/main.xml`, `contents/ui/config/ConfigCalendar.qml`):
 
 | Entry | Type | Default | Meaning |
 |---|---|---|---|
 | `eventLookaheadDays` | Int | `2` | Index into `[7, 14, 30, 60]` preset days array |
 | `enabledCalendarPlugins` | StringList | `pimevents,holidaysevents` | Plugin IDs to load |
 
-`enabledCalendarPlugins` is a `StringList` kcfg type but QML stores/reads it as a JS array via `plasmoid.configuration.enabledCalendarPlugins`. In `ConfigGeneral.qml` it's bridged with a `cfg_` string property and helper functions that split/join on commas.
+`enabledCalendarPlugins` is a `StringList` kcfg type but QML stores/reads it as a JS array via `plasmoid.configuration.enabledCalendarPlugins`. In `ConfigCalendar.qml` it's bridged with a `cfg_` string property and helper functions that split/join on commas.
 
 ### Event colors
 
@@ -239,7 +252,11 @@ If `eventType` is unrecognised, `colors.accent` (#0a84ff) is used. Collection co
 
 The `pimevents` plugin stores which Akonadi collections to monitor in `~/.config/plasmashellrc` under `[PIMEventsPlugin] calendars=<comma-separated collection IDs>`. Without this config, the plugin monitors nothing and returns zero events.
 
-`config.qml` uses the same dynamic `Instantiator` pattern as the Plasma digital clock: it iterates `EventPluginsManager.model`, reads each plugin's `configUi` role (e.g. `"pimevents/PimEventsConfig.qml"`), and appends a `ConfigCategory` tab for each enabled plugin. The pimevents config page shows a tree of Akonadi collections with checkboxes — the user must check the ones they want. Holidays plugin has a similar config page for region selection.
+`config.qml` uses the same dynamic `Instantiator` pattern as the Plasma digital clock: it iterates `EventPluginsManager.model`, reads each plugin's `configUi` role, and appends a `ConfigCategory` sidebar entry for each enabled plugin (Holidays, Astronomical events, …). These are Plasma's own pages, so they stay separate sidebar entries; don't try to embed them.
+
+Our own Akonadi collection picker (`ConfigPimEvents.qml`) is **not** a sidebar entry: it's the "Events" tab of `ConfigCalendar.qml`, loaded through a `Loader` so a missing `kpim6-kdepim-addons` only breaks that tab (a placeholder explains what to install). `ConfigCalendar.saveConfig()` and `configurationChanged` are forwarded to/from the loaded page, because the dialog only talks to the top-level page.
+
+**Sidebar order:** `ConfigModel` can only append, and the plugin entries arrive asynchronously after the model completes. "More & Support" is therefore a non-child `ConfigCategory` appended once by a short debounce timer restarted on each plugin `objectAdded`. Never remove and re-append categories while the dialog is building; it leaves the page stack empty.
 
 Reference implementation: `KDE/plasma-workspace/applets/digital-clock/config.qml` — the `Instantiator` with `delegate: ConfigCategory` pattern.
 

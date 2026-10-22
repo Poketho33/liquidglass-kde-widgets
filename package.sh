@@ -2,18 +2,16 @@
 
 # Package KDE Plasma widgets into distributable .plasmoid files
 
-set -e
+set -euo pipefail
 
 PACKAGE_DIR="2-packaged"
 PACKAGES_SRC="packages"
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
-# Compile translations (.po -> .mo) so they get bundled into the .plasmoid. No-op without gettext.
+# Compile translations (.po -> .mo) so they get bundled into the .plasmoid.
 build_translations() {
-	if command -v msgfmt &>/dev/null; then
-		echo "[*] Compiling translations..."
-		"${SCRIPT_DIR}/translate/build.sh" >/dev/null 2>&1 || true
-	fi
+	echo "[*] Compiling translations..."
+	"${SCRIPT_DIR}/translate/build.sh" "$@"
 }
 
 package_widget() {
@@ -155,14 +153,14 @@ if [[ "$WANT_ALL" == "true" || "$WANT_TEST" == "true" ]]; then
 
 	echo "[*] Packaging ${#WIDGETS[@]} widget(s)..."
 	for widget in "${WIDGETS[@]}"; do
-		package_widget "$widget" || echo "[!] Failed: $widget"
+		package_widget "$widget"
 	done
 
 	echo ""
 	echo "[+] All packages saved to: $(realpath $PACKAGE_DIR)"
 
 elif [[ -n "$WIDGET_NAME" && -d "${PACKAGES_SRC}/$WIDGET_NAME" ]]; then
-	build_translations
+	build_translations "$WIDGET_NAME"
 	package_widget "$WIDGET_NAME"
 	echo "[+] Packaging complete!"
 else

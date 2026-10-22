@@ -40,6 +40,7 @@ Item {
     property real chromaStrength: 0.30
 
     property real blurRadius: 6
+    property int blurAlgorithm: 0
 
     property bool specEnabled: true
     property real specStrength: 0.70
@@ -90,6 +91,27 @@ Item {
     }
 
     property real _offX: 0
+    Timer {
+        id: wallpaperSettledTimer
+        interval: 1600
+        repeat: false
+        onTriggered: glass.invalidateBackdrop()
+    }
+
+    function invalidateBackdrop() {
+        if (glass.solidMode || !glass.active) return
+        wallpaperTex.scheduleUpdate()
+        if (!glass._blurActive) return
+        cropTex.scheduleUpdate()
+        if (glass.blurAlgorithm === 1) { gaussianDownTex.scheduleUpdate(); gaussianHTex.scheduleUpdate(); gaussianVTex.scheduleUpdate() }
+        else {
+            down1Tex.scheduleUpdate(); down2Tex.scheduleUpdate(); down3Tex.scheduleUpdate()
+            down4Tex.scheduleUpdate(); down5Tex.scheduleUpdate(); down6Tex.scheduleUpdate()
+            up6Tex.scheduleUpdate(); up5Tex.scheduleUpdate(); up4Tex.scheduleUpdate()
+            up3Tex.scheduleUpdate(); up2Tex.scheduleUpdate(); up1Tex.scheduleUpdate()
+        }
+    }
+
     property real _offY: 0
     function updateGeometry() {
         if (!wallpaperItem) return
@@ -97,14 +119,31 @@ Item {
         let moved = false
         if (p.x !== _offX) { _offX = p.x; moved = true }
         if (p.y !== _offY) { _offY = p.y; moved = true }
-        if (moved && !realtimeRefraction) wallpaperTex.scheduleUpdate()
+        if (moved) {
+            invalidateBackdrop()
+            if (!realtimeRefraction) { movementBurst.active = true; movementBurst.restart() }
+        }
     }
 
     Timer {
-        interval: 16
+        id: movementBurst
+        interval: 450
+        repeat: false
+        property bool active: false
+        onTriggered: active = false
+    }
+    Timer {
+        interval: glass.realtimeRefraction ? 16 : 250
         repeat: true
         running: !glass.solidMode && glass.active
                  && glass.visible && glass.width > 0 && glass.height > 0
+        onTriggered: glass.updateGeometry()
+    }
+    Timer {
+        id: movementTimer
+        interval: 16
+        repeat: true
+        running: movementBurst.active && !glass.realtimeRefraction && glass.visible
         onTriggered: glass.updateGeometry()
     }
     Component.onCompleted: updateGeometry()
@@ -200,12 +239,27 @@ Item {
         mipmap: true
         textureMirroring: ShaderEffectSource.MirrorVertically
 
-        onSourceItemChanged: scheduleUpdate()
+        onSourceItemChanged: { scheduleUpdate(); glass.invalidateBackdrop(); wallpaperSettledTimer.restart() }
         Connections {
             target: glass
-            function onWidthChanged()  { if (!glass.solidMode && !glass.realtimeRefraction) wallpaperTex.scheduleUpdate() }
-            function onHeightChanged() { if (!glass.solidMode && !glass.realtimeRefraction) wallpaperTex.scheduleUpdate() }
+            function onWidthChanged()  { glass.invalidateBackdrop() }
+            function onHeightChanged() { glass.invalidateBackdrop() }
+            function onRealtimeRefractionChanged() { glass.invalidateBackdrop() }
+            function onBlurRadiusChanged() { glass.invalidateBackdrop() }
+            function onBlurAlgorithmChanged() { glass.invalidateBackdrop() }
+            function onRefractThicknessChanged() { glass.invalidateBackdrop() }
+            function onRefractIORChanged() { glass.invalidateBackdrop() }
+            function onRefractScaleChanged() { glass.invalidateBackdrop() }
+            function onSolidModeChanged() { glass.invalidateBackdrop() }
+            function onSpecStrengthChanged() { glass.invalidateBackdrop() }
+            function onVisibleChanged() { if (glass.visible) glass.invalidateBackdrop() }
         }
+    }
+
+    Connections {
+        target: glass.wallpaperItem
+        ignoreUnknownSignals: true
+        function onAccentColorChanged() { glass.invalidateBackdrop(); wallpaperSettledTimer.restart() }
     }
 
     readonly property bool _blurActive: !glass.solidMode && glass.blurRadius > 0 && glass.active
@@ -244,7 +298,7 @@ Item {
     ShaderEffectSource {
         id: cropTex; anchors.fill: parent; opacity: 0
         sourceItem: glass._blurActive ? cropPass : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        live: glass._blurActive && glass.realtimeRefraction; hideSource: true; smooth: true
     }
 
     ShaderEffect {
@@ -254,8 +308,8 @@ Item {
         property vector2d halfpixel: Qt.vector2d(0.5 / glass._widgetW, 0.5 / glass._widgetH)
     }
     ShaderEffectSource { id: down1Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 1 ? down1 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 1 ? down1 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.max(1, Math.round(glass._widgetW / 2)),
                              Math.max(1, Math.round(glass._widgetH / 2))) }
 
@@ -267,8 +321,8 @@ Item {
                                                   0.5 / Math.max(1, down1Tex.textureSize.height))
     }
     ShaderEffectSource { id: down2Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 2 ? down2 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 2 ? down2 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.max(1, Math.round(glass._widgetW / 4)),
                              Math.max(1, Math.round(glass._widgetH / 4))) }
 
@@ -280,8 +334,8 @@ Item {
                                                   0.5 / Math.max(1, down2Tex.textureSize.height))
     }
     ShaderEffectSource { id: down3Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 3 ? down3 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 3 ? down3 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.max(1, Math.round(glass._widgetW / 8)),
                              Math.max(1, Math.round(glass._widgetH / 8))) }
 
@@ -293,8 +347,8 @@ Item {
                                                   0.5 / Math.max(1, down3Tex.textureSize.height))
     }
     ShaderEffectSource { id: down4Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 4 ? down4 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 4 ? down4 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.max(1, Math.round(glass._widgetW / 16)),
                              Math.max(1, Math.round(glass._widgetH / 16))) }
 
@@ -306,8 +360,8 @@ Item {
                                                   0.5 / Math.max(1, down4Tex.textureSize.height))
     }
     ShaderEffectSource { id: down5Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 5 ? down5 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 5 ? down5 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.max(1, Math.round(glass._widgetW / 32)),
                              Math.max(1, Math.round(glass._widgetH / 32))) }
 
@@ -319,8 +373,8 @@ Item {
                                                   0.5 / Math.max(1, down5Tex.textureSize.height))
     }
     ShaderEffectSource { id: down6Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 6 ? down6 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 6 ? down6 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.max(1, Math.round(glass._widgetW / 64)),
                              Math.max(1, Math.round(glass._widgetH / 64))) }
 
@@ -332,8 +386,8 @@ Item {
                                                   0.5 / Math.max(1, down5Tex.textureSize.height))
     }
     ShaderEffectSource { id: up6Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 6 ? up6 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 6 ? up6 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: down5Tex.textureSize }
 
     ShaderEffect {
@@ -344,8 +398,8 @@ Item {
                                                   0.5 / Math.max(1, down4Tex.textureSize.height))
     }
     ShaderEffectSource { id: up5Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 5 ? up5 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 5 ? up5 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: down4Tex.textureSize }
 
     ShaderEffect {
@@ -356,8 +410,8 @@ Item {
                                                   0.5 / Math.max(1, down3Tex.textureSize.height))
     }
     ShaderEffectSource { id: up4Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 4 ? up4 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 4 ? up4 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: down3Tex.textureSize }
 
     ShaderEffect {
@@ -368,8 +422,8 @@ Item {
                                                   0.5 / Math.max(1, down2Tex.textureSize.height))
     }
     ShaderEffectSource { id: up3Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 3 ? up3 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 3 ? up3 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: down2Tex.textureSize }
 
     ShaderEffect {
@@ -380,8 +434,8 @@ Item {
                                                   0.5 / Math.max(1, down1Tex.textureSize.height))
     }
     ShaderEffectSource { id: up2Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive && glass._blurIters >= 2 ? up2 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 && glass._blurIters >= 2 ? up2 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: down1Tex.textureSize }
 
     ShaderEffect {
@@ -391,9 +445,63 @@ Item {
         property vector2d halfpixel: Qt.vector2d(0.5 / glass._widgetW, 0.5 / glass._widgetH)
     }
     ShaderEffectSource { id: up1Tex; anchors.fill: parent; opacity: 0
-        sourceItem: glass._blurActive ? up1 : null
-        live: glass._blurActive; hideSource: true; smooth: true
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 0 ? up1 : null
+        live: glass._blurActive && glass.blurAlgorithm === 0 && glass.realtimeRefraction; hideSource: true; smooth: true
         textureSize: Qt.size(Math.round(glass._widgetW), Math.round(glass._widgetH)) }
+
+    // =====================================================================
+    //  Gaussian quality blur: half-res downsample -> wide separable
+    //  Gaussian -> bilinear upsample (free, via glassShader's sampling).
+    //  See LiquidGlass.qml's mirror of this pipeline for the rationale.
+    // =====================================================================
+    readonly property size _gaussHalfSize: Qt.size(
+        Math.max(1, Math.round(glass._widgetW / 2)),
+        Math.max(1, Math.round(glass._widgetH / 2)))
+
+    ShaderEffect {
+        id: gaussianDown
+        anchors.fill: parent; visible: false
+        fragmentShader: Qt.resolvedUrl("shaders/kawase_down.frag.qsb")
+        property variant source: cropTex
+        property vector2d halfpixel: Qt.vector2d(0.5 / glass._widgetW, 0.5 / glass._widgetH)
+    }
+    ShaderEffectSource {
+        id: gaussianDownTex; anchors.fill: parent; opacity: 0
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 1 ? gaussianDown : null
+        live: glass._blurActive && glass.blurAlgorithm === 1 && glass.realtimeRefraction
+        hideSource: true; smooth: true
+        textureSize: glass._gaussHalfSize
+    }
+    ShaderEffect {
+        id: gaussianH
+        anchors.fill: parent; visible: false
+        fragmentShader: Qt.resolvedUrl("shaders/blur_h.frag.qsb")
+        property variant source: gaussianDownTex
+        property real radiusPx: glass.blurRadius * 0.5
+        property vector2d sourceSizePx: Qt.vector2d(glass._gaussHalfSize.width, glass._gaussHalfSize.height)
+    }
+    ShaderEffectSource {
+        id: gaussianHTex; anchors.fill: parent; opacity: 0
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 1 ? gaussianH : null
+        live: glass._blurActive && glass.blurAlgorithm === 1 && glass.realtimeRefraction
+        hideSource: true; smooth: true
+        textureSize: glass._gaussHalfSize
+    }
+    ShaderEffect {
+        id: gaussianV
+        anchors.fill: parent; visible: false
+        fragmentShader: Qt.resolvedUrl("shaders/blur_v.frag.qsb")
+        property variant source: gaussianHTex
+        property real radiusPx: glass.blurRadius * 0.5
+        property vector2d sourceSizePx: Qt.vector2d(glass._gaussHalfSize.width, glass._gaussHalfSize.height)
+    }
+    ShaderEffectSource {
+        id: gaussianVTex; anchors.fill: parent; opacity: 0
+        sourceItem: glass._blurActive && glass.blurAlgorithm === 1 ? gaussianV : null
+        live: glass._blurActive && glass.blurAlgorithm === 1 && glass.realtimeRefraction
+        hideSource: true; smooth: true
+        textureSize: glass._gaussHalfSize
+    }
 
     // =====================================================================
     //  Final glass shader (text-shaped)
@@ -409,7 +517,7 @@ Item {
         visible: true
         fragmentShader: Qt.resolvedUrl("shaders/liquidglasstext.frag.qsb")
 
-        property variant backdrop: glass._blurActive ? up1Tex : wallpaperTex
+        property variant backdrop: glass._blurActive ? (glass.blurAlgorithm === 1 ? gaussianVTex : up1Tex) : wallpaperTex
         property variant sdfTex: sdfTexSrc
         property variant maskTex: maskSrc
         property size size: Qt.size(glass._widgetW, glass._widgetH)

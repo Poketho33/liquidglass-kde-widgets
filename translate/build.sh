@@ -6,7 +6,7 @@
 # looks for it, so the translation ships with the widget on install/package.
 #
 # Usage:
-#   ./translate/build.sh              # all shippable packages (skips test-*)
+#   ./translate/build.sh              # all widgets with translation sources
 #   ./translate/build.sh weather      # a single package
 #
 # Requires gettext (msgfmt):
@@ -14,12 +14,12 @@
 #   Fedora:        sudo dnf install gettext
 #   Arch:          sudo pacman -S gettext
 
-set -e
+set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 PROJECT_DIR="$(dirname "$SCRIPT_DIR")"
 
-if ! command -v msgfmt &>/dev/null; then
+if ! command -v msgfmt >/dev/null 2>&1; then
     echo "[!] msgfmt not found. Install gettext:"
     echo "    Debian/Ubuntu: sudo apt install gettext"
     echo "    Fedora:        sudo dnf install gettext"
@@ -27,23 +27,26 @@ if ! command -v msgfmt &>/dev/null; then
     exit 1
 fi
 
+if ! command -v jq >/dev/null 2>&1; then
+    echo "[!] jq not found. Install jq to read widget metadata.json files." >&2
+    exit 1
+fi
+
 build_package() {
     local PACKAGE_NAME="$1"
-
-    # Skip development-only widgets.
-    if [[ "$PACKAGE_NAME" == test-* ]]; then
-        return 0
-    fi
 
     local PACKAGE_DIR="${PROJECT_DIR}/packages/${PACKAGE_NAME}"
     local METADATA_FILE="${PACKAGE_DIR}/metadata.json"
     local PO_DIR="${SCRIPT_DIR}/${PACKAGE_NAME}"
 
-    [[ -f "$METADATA_FILE" ]] || { echo "[!] No metadata.json for: ${PACKAGE_NAME}"; return 1; }
+    [[ -f "$METADATA_FILE" ]] || { echo "[!] No metadata.json for: ${PACKAGE_NAME}" >&2; return 1; }
     [[ -d "$PO_DIR" ]] || return 0
 
     local PLUGIN_ID
-    PLUGIN_ID=$(jq -r ".KPlugin.Id" "$METADATA_FILE")
+    if ! PLUGIN_ID=$(jq -er '.KPlugin.Id | select(type == "string" and length > 0)' "$METADATA_FILE"); then
+        echo "[!] Invalid or missing KPlugin.Id in: ${METADATA_FILE}" >&2
+        return 1
+    fi
     local DOMAIN="plasma_applet_${PLUGIN_ID}"
 
     local LANG_COUNT=0
@@ -56,7 +59,7 @@ build_package() {
         local MO_FILE="${LOCALE_DIR}/${DOMAIN}.mo"
 
         mkdir -p "$LOCALE_DIR"
-        msgfmt -o "$MO_FILE" "$PO_FILE"
+        msgfmt --check --output-file="$MO_FILE" "$PO_FILE"
 
         echo "    [+] ${PACKAGE_NAME}/${LANG_CODE} -> ${DOMAIN}.mo"
         LANG_COUNT=$((LANG_COUNT + 1))
@@ -72,15 +75,20 @@ build_package() {
 echo "macOS Widgets - compiling translations"
 echo ""
 
-if [[ -n "$1" ]]; then
+if [[ $# -gt 1 ]]; then
+    echo "Usage: $0 [widget]" >&2
+    exit 2
+fi
+
+if [[ $# -eq 1 ]]; then
     if [[ ! -d "${PROJECT_DIR}/packages/$1" ]]; then
-        echo "[!] Package not found: $1"
+        echo "[!] Package not found: $1" >&2
         exit 1
     fi
     build_package "$1"
 else
     for PACKAGE_DIR in "${PROJECT_DIR}"/packages/*/; do
-        build_package "$(basename "$PACKAGE_DIR")" || true
+        build_package "$(basename "$PACKAGE_DIR")"
     done
 fi
 

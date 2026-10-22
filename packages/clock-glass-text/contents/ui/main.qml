@@ -2,6 +2,7 @@ import QtQuick
 import QtQuick.Layouts
 import org.kde.plasma.plasmoid
 import org.kde.plasma.core as PlasmaCore
+import org.kde.kcmutils as KCMUtils
 import "components"
 import "widget"
 
@@ -9,6 +10,17 @@ PlasmoidItem {
     id: root
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+
+    WidgetActions { id: commonActions }
+
+    PlasmaCore.Action {
+        id: timeAction
+        text: i18n("Adjust Date and Time…")
+        icon.name: "preferences-system-time"
+        onTriggered: KCMUtils.KCMLauncher.openSystemSettings("kcm_clock")
+    }
+
+    Plasmoid.contextualActions: [timeAction].concat(commonActions.list)
     preferredRepresentation: fullRepresentation
 
     MacOSColors {
@@ -104,6 +116,7 @@ PlasmoidItem {
             chromaStrength: plasmoid.configuration.chromaStrengthPct / 100
             specStrength: plasmoid.configuration.specStrengthPct / 100
             blurRadius: plasmoid.configuration.blurRadiusPx
+            blurAlgorithm: plasmoid.configuration.blurAlgorithm
             realtimeRefraction: plasmoid.configuration.realtimeRefraction
             fallbackOpacity: colors.glassFallbackOpacity
             solidMode: colors.isSolid

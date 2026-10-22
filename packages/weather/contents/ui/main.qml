@@ -9,6 +9,17 @@ PlasmoidItem {
     id: root
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+
+    WidgetActions { id: commonActions }
+
+    PlasmaCore.Action {
+        id: refreshAction
+        text: i18n("Refresh")
+        icon.name: "view-refresh"
+        onTriggered: weatherData.forceRefresh()
+    }
+
+    Plasmoid.contextualActions: [refreshAction].concat(commonActions.list)
     preferredRepresentation: fullRepresentation
 
     MacOSColors {
@@ -32,8 +43,8 @@ PlasmoidItem {
     fullRepresentation: Item {
         id: full
 
-        Layout.preferredWidth:  full.width  > 0 ? full.width  : 200
-        Layout.preferredHeight: full.height > 0 ? full.height : 200
+        Layout.preferredWidth:  full.width  > 0 ? full.width  : 300
+        Layout.preferredHeight: full.height > 0 ? full.height : 300
         Layout.minimumWidth: 160
         Layout.minimumHeight: 160
 
@@ -58,6 +69,7 @@ PlasmoidItem {
             chromaStrength: plasmoid.configuration.chromaStrengthPct / 100
             specStrength: plasmoid.configuration.specStrengthPct / 100
             blurRadius: plasmoid.configuration.blurRadiusPx
+            blurAlgorithm: plasmoid.configuration.blurAlgorithm
             realtimeRefraction: plasmoid.configuration.realtimeRefraction
             fallbackOpacity: colors.glassFallbackOpacity
             solidMode: colors.isSolid

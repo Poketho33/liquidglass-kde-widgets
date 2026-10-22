@@ -19,6 +19,15 @@ Item {
 
     clip: true
 
+    readonly property bool effectivelyVisible: {
+        var item = marquee
+        while (item) {
+            if (!item.visible || item.opacity <= 0) return false
+            item = item.parent
+        }
+        return true
+    }
+
     Text {
         id: label
         text: marquee.text
@@ -39,7 +48,7 @@ Item {
 
         SequentialAnimation on x {
             id: scrollAnim
-            running: label.needsScrolling
+            running: marquee.effectivelyVisible && label.needsScrolling
             loops: marquee.maxLoops
 
             PauseAnimation { duration: marquee.initialPause }
@@ -75,11 +84,14 @@ Item {
                 if (label.needsScrolling) scrollAnim.restart()
             }
             function onVisibleChanged() {
-                if (marquee.visible) {
-                    scrollAnim.stop()
-                    label.x = 0
-                    if (label.needsScrolling) scrollAnim.restart()
-                }
+                scrollAnim.stop()
+                label.x = 0
+                if (marquee.effectivelyVisible && label.needsScrolling) scrollAnim.restart()
+            }
+            function onEffectivelyVisibleChanged() {
+                scrollAnim.stop()
+                label.x = 0
+                if (marquee.effectivelyVisible && label.needsScrolling) scrollAnim.restart()
             }
             function onWidthChanged() {
                 scrollAnim.stop()

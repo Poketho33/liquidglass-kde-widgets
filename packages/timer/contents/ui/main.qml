@@ -10,6 +10,24 @@ PlasmoidItem {
     id: root
 
     Plasmoid.backgroundHints: PlasmaCore.Types.NoBackground
+
+    WidgetActions { id: commonActions }
+
+    PlasmaCore.Action {
+        id: toggleAction
+        text: root.timerState === 1 ? i18n("Pause") : root.timerState === 2 ? i18n("Resume") : i18n("Start")
+        icon.name: root.timerState === 1 ? "media-playback-pause" : "media-playback-start"
+        onTriggered: root.timerState === 1 ? root.pauseTimer() : root.timerState === 2 ? root.resumeTimer() : root.startTimer()
+    }
+    PlasmaCore.Action {
+        id: resetAction
+        text: i18n("Reset")
+        icon.name: "view-refresh"
+        enabled: root.timerState !== 0
+        onTriggered: root.cancelTimer()
+    }
+
+    Plasmoid.contextualActions: [toggleAction, resetAction].concat(commonActions.list)
     preferredRepresentation: (Plasmoid.formFactor === PlasmaCore.Types.Horizontal ||
                               Plasmoid.formFactor === PlasmaCore.Types.Vertical)
                              ? compactRepresentation : fullRepresentation
@@ -245,8 +263,8 @@ PlasmoidItem {
 
     fullRepresentation: Item {
         id: full
-        Layout.preferredWidth:  full.width  > 0 ? full.width  : 200
-        Layout.preferredHeight: full.height > 0 ? full.height : 200
+        Layout.preferredWidth:  full.width  > 0 ? full.width  : 300
+        Layout.preferredHeight: full.height > 0 ? full.height : 300
         Layout.minimumWidth: 160
         Layout.minimumHeight: 160
 
@@ -273,6 +291,7 @@ PlasmoidItem {
             chromaStrength: plasmoid.configuration.chromaStrengthPct / 100
             specStrength: plasmoid.configuration.specStrengthPct / 100
             blurRadius: plasmoid.configuration.blurRadiusPx
+            blurAlgorithm: plasmoid.configuration.blurAlgorithm
             realtimeRefraction: plasmoid.configuration.realtimeRefraction
             fallbackOpacity: colors.glassFallbackOpacity
             solidMode: colors.isSolid

@@ -161,10 +161,23 @@ Item {
         Label {
             Layout.fillWidth: true
             Layout.topMargin: Kirigami.Units.largeSpacing
-            text: i18n("Locations are resolved with the Open-Meteo Geocoding API (geocoding-api.open-meteo.com) and forecasts are fetched from Open-Meteo (api.open-meteo.com). No account or API key is required. Selecting a result stores its coordinates directly, so weather refreshes skip the geocoding step.")
+            // Data-use note (see also the music widget's LRCLIB note).
+            // Open-Meteo's free tier is CC BY 4.0, which requires the
+            // attribution in the first sentence; keep it.
+            textFormat: Text.StyledText
+            linkColor: Kirigami.Theme.linkColor
+            text: i18n("Weather data by <a href=\"%1\">Open-Meteo.com</a>, licensed under <a href=\"%2\">CC BY 4.0</a>. No account or API key is needed.<br><br>Place names you type are looked up with the Open-Meteo Geocoding API (geocoding-api.open-meteo.com), and forecasts for the chosen location's coordinates come from api.open-meteo.com. Selecting a result stores its coordinates, so refreshes skip the lookup.<br><br>Open-Meteo says it collects no personal data; its web server logs, which may include coordinates and IP addresses, are deleted after 90 days. See its <a href=\"%3\">Terms &amp; Privacy</a>.",
+                       "https://open-meteo.com",
+                       "https://open-meteo.com/en/licence",
+                       "https://open-meteo.com/en/terms")
+            onLinkActivated: (link) => Qt.openUrlExternally(link)
+
+            HoverHandler {
+                cursorShape: parent.hoveredLink ? Qt.PointingHandCursor : Qt.ArrowCursor
+            }
             wrapMode: Text.WordWrap
-            opacity: 0.6
-            font.pixelSize: Kirigami.Theme.smallFont.pixelSize
+            // Normal size, dimmed: secondary but still comfortable to read.
+            opacity: 0.7
         }
     }
 }

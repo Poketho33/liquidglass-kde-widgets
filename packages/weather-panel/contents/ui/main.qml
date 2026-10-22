@@ -12,6 +12,17 @@ PlasmoidItem {
 
     Plasmoid.backgroundHints: PlasmaCore.Types.DefaultBackground
 
+    WidgetActions { id: commonActions }
+
+    PlasmaCore.Action {
+        id: refreshAction
+        text: i18n("Refresh")
+        icon.name: "view-refresh"
+        onTriggered: weatherData.forceRefresh()
+    }
+
+    Plasmoid.contextualActions: [refreshAction].concat(commonActions.list)
+
     FontLoader { id: sfLight;   source: Qt.resolvedUrl("../fonts/SF-Pro-Display-Light.otf") }
     FontLoader { id: sfRegular; source: Qt.resolvedUrl("../fonts/sf_pro_display_regular.otf") }
 
