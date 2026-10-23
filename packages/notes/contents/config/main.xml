@@ -7,9 +7,9 @@
 
   <group name="General">
     <!-- Notes Entries -->
-    <entry name="Text" type="String">
+    <entry name="Rows" type="String">
       <label>Notes text</label>
-      <default>Type here!</default>
+      <default>[]</default>
     </entry>
 
     <!-- Shader Entries -->
