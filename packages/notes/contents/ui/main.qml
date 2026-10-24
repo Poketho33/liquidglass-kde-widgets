@@ -64,7 +64,7 @@ PlasmoidItem {
         let saved = [];
         try { saved = JSON.parse(Plasmoid.configuration.Rows); } catch (e) {}
         if (!Array.isArray(saved) || saved.length === 0) {
-            // first run
+            // first run / seems to make row correctly but doesnt show (needs to be fixed!)
             saved = [{ type: "text", html: Plasmoid.configuration.Text || "", checked: false }];
         }
         saved.forEach(r => rows.append({
@@ -78,7 +78,11 @@ PlasmoidItem {
 
     onExternalData: (mimetype, data) => {
         if (mimetype === "text/plain") {
-            rows.append({ type: "text", html: data, checked: false });
+            rows.append({ 
+                type: "text", 
+                html: data.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;'), 
+                checked: false 
+            });
             save();
         }
     }
@@ -169,20 +173,22 @@ PlasmoidItem {
                 Layout.fillHeight: true
                 model: rows
                 spacing: 2
+                topMargin: 2
+                bottomMargin: 2
+                clip: true
 
-                // PlasmaComponents.ScrollBar.vertical: PlasmaComponents.ScrollBar {}
+                PlasmaComponents.ScrollBar.vertical: PlasmaComponents.ScrollBar {}
 
-                // clicking the empty space below the last row focuses it
+                // clicking empty space focuses the last row
                 footer: MouseArea {
                     width: list.width
-                    height: Kirigami.Units.gridUnit * 2
+                    height: Kirigami.Units.gridUnit * 10
                     onClicked: fullRepContainer.focusRow(rows.count - 1, true)
                 }
 
                 delegate: RowLayout {
                     id: row
                     width: ListView.view.width
-                    spacing: Kirigami.Units.smallSpacing
 
                     function focusField(atEnd) {
                         field.forceActiveFocus();
@@ -266,6 +272,8 @@ PlasmoidItem {
                     PlasmaComponents.TextArea {
                         id: field
                         Layout.fillWidth: true
+                        topPadding: 0
+                        bottomPadding: 0
 
                         readonly property int rowIndex: index
                         readonly property bool isCheck: model.type === "check"
@@ -349,13 +357,14 @@ PlasmoidItem {
                                 }
 
                             // Arrow keys hop between rows at the first/last visual line
-                            } else if (event.key === Qt.Key_Up && !shift && index > 0
-                                       && Math.abs(positionToRectangle(0).y - cursorRectangle.y) < 1) {
+                            } else if (event.key === Qt.Key_Up && !shift && index > 0 && Math.abs(positionToRectangle(0).y - cursorRectangle.y) < 1) {
                                 fullRepContainer.focusRow(index - 1, true);
                                 event.accepted = true;
-                            } else if (event.key === Qt.Key_Down && !shift && index < rows.count - 1
-                                       && Math.abs(positionToRectangle(length).y - cursorRectangle.y) < 1) {
+                            } else if (event.key === Qt.Key_Down && !shift && index < rows.count - 1 && Math.abs(positionToRectangle(length).y - cursorRectangle.y) < 1) {
                                 fullRepContainer.focusRow(index + 1, false);
+                                event.accepted = true;
+                            } else if (event.key === Qt.Key_Left && cursorPosition === 0 && !shift && index > 0 ) {
+                                fullRepContainer.focusRow(index - 1, false);
                                 event.accepted = true;
                             }
                         }
